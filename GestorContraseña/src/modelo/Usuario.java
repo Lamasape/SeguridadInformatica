@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Usuario {
 
-	String contraseña; 
+	String contrasena
 	List<Registro> registros; 
 	
 }
