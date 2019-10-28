@@ -4,7 +4,7 @@ public class Registro {
 	
 	String titulo; 
 	String nombreUsuario; 
-	String contrasena
+	String contrasena;
 	String URL; 
 	
 
