@@ -2,21 +2,8 @@ package igu;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.security.Key;
-import java.security.MessageDigest;
-import java.util.Arrays;
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.digest.DigestUtils;
-
 import modelo.Registro;
-import modelo.Usuario;
 import servicio.impl.ServiceRegistroImpl;
-import utils.Utils;
 
 public class Main {
 
@@ -51,13 +38,13 @@ public class Main {
 		registro.setURL("http://twitter.com");
 
 		// CREAR REGISTRO
-//		service.crearRegistro(registro);
+		service.crearRegistro(registro);
 
 		// ELIMINAR REGISTRO
 //		service.eliminarRegistro(registro);
 
 		// Modificar Contraseña
-		service.modificarContrasenaMaestra("lalalalla");
+//		service.modificarContrasenaMaestra("ÑE");
 
 
 	}

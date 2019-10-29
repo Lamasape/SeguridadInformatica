@@ -34,6 +34,7 @@ public class ServiceRegistroImpl implements ServicioRegistro {
 	@Override
 	public void modificarContrasenaMaestra(String contrasena) {
 		persistencia.modificarContrasenaMaestra(contrasena);
+		System.out.println("CONTRASEÑA MODIFICADA");
 		
 	}
 

@@ -4,17 +4,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.Key;
 import java.security.MessageDigest;
-import java.util.Arrays;
-
 import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 
 public class Utils {
+
+	private static final String ALGORITHM = "AES";
+	private static final byte[] keyValue = "ADBSJHJS12547896".getBytes();
 
 	public void encriptarContrasena(String password) {
 
@@ -42,56 +43,46 @@ public class Utils {
 		}
 	}
 
-	public static String Encriptar(String texto) {
+	/**
+	 * @param args
+	 * @throws Exception
+	 */
 
-		String secretKey = "qualityinfosolutions"; // llave para encriptar datos
-		String base64EncryptedString = "";
+	public static String encriptar(String valueToEnc) throws Exception {
 
-		try {
+		Key key = generateKey();
+		Cipher c = Cipher.getInstance(ALGORITHM);
+		c.init(Cipher.ENCRYPT_MODE, key);
 
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] digestOfPassword = md.digest(secretKey.getBytes("utf-8"));
-			byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
+	//	System.out.println("valueToEnc.getBytes().length " + valueToEnc.getBytes().length);
+		byte[] encValue = c.doFinal(valueToEnc.getBytes());
+	//	System.out.println("encValue length" + encValue.length);
+		byte[] encryptedByteValue = new Base64().encode(encValue);
+		String encryptedValue = encryptedByteValue.toString();
+	//	System.out.println("encryptedValue " + encryptedValue);
 
-			SecretKey key = new SecretKeySpec(keyBytes, "DESede");
-			Cipher cipher = Cipher.getInstance("DESede");
-			cipher.init(Cipher.ENCRYPT_MODE, key);
-
-			byte[] plainTextBytes = texto.getBytes("utf-8");
-			byte[] buf = cipher.doFinal(plainTextBytes);
-			byte[] base64Bytes = Base64.encodeBase64(buf);
-			base64EncryptedString = new String(base64Bytes);
-
-		} catch (Exception ex) {
-		}
-		return base64EncryptedString;
+		return encryptedValue;
 	}
 
-	public  static String Desencriptar(String textoEncriptado) throws Exception {
+	public static String desencriptar(String encryptedValue) throws Exception {
+		Key key = generateKey();
+		Cipher c = Cipher.getInstance(ALGORITHM);
+		c.init(Cipher.DECRYPT_MODE, key);
 
-		String secretKey = "qualityinfosolutions"; // llave para desenciptar datos
-		String base64EncryptedString = "";
+		byte[] enctVal = c.doFinal(encryptedValue.getBytes());
+	//	System.out.println("enctVal length " + enctVal.length);
 
-		try {
-			byte[] message = Base64.decodeBase64(textoEncriptado.getBytes("utf-8"));
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] digestOfPassword = md.digest(secretKey.getBytes("utf-8"));
-			byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
-			SecretKey key = new SecretKeySpec(keyBytes, "DESede");
+		byte[] decordedValue = new Base64().decode(enctVal);
 
-			Cipher decipher = Cipher.getInstance("DESede");
-			decipher.init(Cipher.DECRYPT_MODE, key);
-
-			byte[] plainText = decipher.doFinal(message);
-
-			base64EncryptedString = new String(plainText, "UTF-8");
-
-		} catch (Exception ex) {
-		}
-		return base64EncryptedString;
+		return decordedValue.toString();
 	}
-	
-	public static void  borrarTxt(File fileImport) throws IOException {
+
+	private static Key generateKey() throws Exception {
+		Key key = new SecretKeySpec(keyValue, ALGORITHM);
+		return key;
+	}
+
+	public static void borrarTxt(File fileImport) throws IOException {
 		FileInputStream fileStream = null;
 		PrintWriter writer = null;
 		try {

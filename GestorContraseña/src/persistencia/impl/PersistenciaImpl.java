@@ -8,8 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.rmi.CORBA.Util;
-
 import modelo.Registro;
 import modelo.Usuario;
 import persistencia.Persistencia;
@@ -24,7 +22,7 @@ public class PersistenciaImpl implements Persistencia {
 
 		try {
 			FileWriter escribir = new FileWriter(bdd, true);
-			escribir.write(Utils.Encriptar(contraseña));
+			escribir.write(Utils.encriptar(contraseña));
 			escribir.close();
 		} // Si existe un problema al escribir cae aqui
 		catch (Exception e) {
@@ -45,7 +43,7 @@ public class PersistenciaImpl implements Persistencia {
 			b = new BufferedReader(f);
 			while ((cadena = b.readLine()) != null) {
 				if (contador == 0) {
-					usuario.setContrasenaMaestra(Utils.Encriptar(cadena));
+					usuario.setContrasenaMaestra(Utils.encriptar(cadena));
 					contador++;
 				} else {
 
@@ -67,6 +65,9 @@ public class PersistenciaImpl implements Persistencia {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("ERROR ENCRIPTAR" + e.toString());
+			e.printStackTrace();
 		} finally {
 			try {
 				b.close();
@@ -85,7 +86,7 @@ public class PersistenciaImpl implements Persistencia {
 			escribir.write("\n" + registro.getId() + "#");
 			escribir.write(registro.getTitulo() + "#");
 			escribir.write(registro.getNombreUsuario() + "#");
-			escribir.write(Utils.Encriptar(registro.getContrasena()) + "#");
+			escribir.write(Utils.encriptar(registro.getContrasena()) + "#");
 			escribir.write(registro.getURL());
 			escribir.close();
 		} catch (Exception e) {
@@ -126,15 +127,25 @@ public class PersistenciaImpl implements Persistencia {
 	@Override
 	public void modificarContrasenaMaestra(String contrasena) {
 		Usuario usuario = leerUsuario();
-		usuario.setContrasenaMaestra(Utils.Encriptar(contrasena));
+
 		try {
+			usuario.setContrasenaMaestra((Utils.encriptar(contrasena)));
 			Utils.borrarTxt(bdd);
-			for (Registro registro : usuario.getRegistros()) {
+			if (usuario.getRegistros().size() > 0) {
+				for (Registro registro : usuario.getRegistros()) {
+					crearContrasenaMaestra(usuario.getContrasenaMaestra());
+					crearRegistro(registro);
+				}
+
+			} else {
+				Utils.borrarTxt(bdd);
 				crearContrasenaMaestra(usuario.getContrasenaMaestra());
-				crearRegistro(registro);
 			}
 		} catch (IOException e) {
 			System.out.println("Error modificar contraseña" + e.toString());
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("ERROR ENCRIPTAR" + e.toString());
 			e.printStackTrace();
 		}
 
@@ -147,7 +158,7 @@ public class PersistenciaImpl implements Persistencia {
 			Utils.borrarTxt(bdd);
 			for (Registro registro : usuario.getRegistros()) {
 				if (reg.getId() == registro.getId()) {
-					registro.setContrasena(Utils.Encriptar(reg.getContrasena()));
+					registro.setContrasena(Utils.encriptar(reg.getContrasena()));
 					registro.setNombreUsuario(reg.getTitulo());
 					registro.setTitulo(reg.getTitulo());
 					registro.setURL(reg.getURL());
@@ -162,11 +173,11 @@ public class PersistenciaImpl implements Persistencia {
 		} catch (IOException e) {
 			System.out.println("Error modificar contraseña" + e.toString());
 			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("ERROR ENCRIPTAR" + e.toString());
+			e.printStackTrace();
 		}
 
 	}
 
-
-
-	
 }
