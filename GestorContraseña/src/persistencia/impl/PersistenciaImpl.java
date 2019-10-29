@@ -2,17 +2,18 @@ package persistencia.impl;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
+
+import javax.rmi.CORBA.Util;
 
 import modelo.Registro;
 import modelo.Usuario;
 import persistencia.Persistencia;
+import utils.Utils;
 
 public class PersistenciaImpl implements Persistencia {
 
@@ -23,7 +24,7 @@ public class PersistenciaImpl implements Persistencia {
 
 		try {
 			FileWriter escribir = new FileWriter(bdd, true);
-			escribir.write(contraseña);
+			escribir.write(Utils.Encriptar(contraseña));
 			escribir.close();
 		} // Si existe un problema al escribir cae aqui
 		catch (Exception e) {
@@ -44,7 +45,7 @@ public class PersistenciaImpl implements Persistencia {
 			b = new BufferedReader(f);
 			while ((cadena = b.readLine()) != null) {
 				if (contador == 0) {
-					usuario.setContrasenaMaestra(cadena);
+					usuario.setContrasenaMaestra(Utils.Encriptar(cadena));
 					contador++;
 				} else {
 
@@ -84,7 +85,7 @@ public class PersistenciaImpl implements Persistencia {
 			escribir.write("\n" + registro.getId() + "#");
 			escribir.write(registro.getTitulo() + "#");
 			escribir.write(registro.getNombreUsuario() + "#");
-			escribir.write(registro.getContrasena() + "#");
+			escribir.write(Utils.Encriptar(registro.getContrasena()) + "#");
 			escribir.write(registro.getURL());
 			escribir.close();
 		} catch (Exception e) {
@@ -106,12 +107,12 @@ public class PersistenciaImpl implements Persistencia {
 			}
 			if (rgs.size() > 0) {
 				for (Registro registro2 : rgs) {
-					borrarTxt(bdd);
+					Utils.borrarTxt(bdd);
 					crearContrasenaMaestra(usuario.getContrasenaMaestra());
 					crearRegistro(registro2);
 				}
 			} else {
-				borrarTxt(bdd);
+				Utils.borrarTxt(bdd);
 				crearContrasenaMaestra(usuario.getContrasenaMaestra());
 			}
 
@@ -125,9 +126,9 @@ public class PersistenciaImpl implements Persistencia {
 	@Override
 	public void modificarContrasenaMaestra(String contrasena) {
 		Usuario usuario = leerUsuario();
-		usuario.setContrasenaMaestra(contrasena);
+		usuario.setContrasenaMaestra(Utils.Encriptar(contrasena));
 		try {
-			borrarTxt(bdd);
+			Utils.borrarTxt(bdd);
 			for (Registro registro : usuario.getRegistros()) {
 				crearContrasenaMaestra(usuario.getContrasenaMaestra());
 				crearRegistro(registro);
@@ -143,10 +144,10 @@ public class PersistenciaImpl implements Persistencia {
 	public void modificarRegistro(Registro reg) {
 		Usuario usuario = leerUsuario();
 		try {
-			borrarTxt(bdd);
+			Utils.borrarTxt(bdd);
 			for (Registro registro : usuario.getRegistros()) {
 				if (reg.getId() == registro.getId()) {
-					registro.setContrasena(reg.getContrasena());
+					registro.setContrasena(Utils.Encriptar(reg.getContrasena()));
 					registro.setNombreUsuario(reg.getTitulo());
 					registro.setTitulo(reg.getTitulo());
 					registro.setURL(reg.getURL());
@@ -165,18 +166,7 @@ public class PersistenciaImpl implements Persistencia {
 
 	}
 
-	public void borrarTxt(File fileImport) throws IOException {
-		FileInputStream fileStream = null;
-		PrintWriter writer = null;
-		try {
-			writer = new PrintWriter(fileImport);
-			writer.print("");
-			fileStream = new FileInputStream(fileImport);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			writer.close();
-		}
-	}
 
+
+	
 }
