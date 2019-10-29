@@ -16,14 +16,25 @@ public class ServiceRegistroImpl implements ServicioRegistro {
 		System.out.println("Registro Creada");
 	}
 	@Override
-	public Usuario leerContrasenaMaestra() throws IOException {
-		 return persistencia.leerContrasenaMaestra();
+	public Usuario leerUsuario() throws IOException {
+		 return persistencia.leerUsuario();
 		
 	}
 	@Override
 	public void crearContrasenaMaestra(String contrasena) {
 		persistencia.crearContrasenaMaestra(contrasena);
 		System.out.println("Contraseña Creada");
+	}
+	@Override
+	public void eliminarRegistro(Registro registro) {
+		persistencia.eliminarRegistro(registro);
+		System.out.println("Registro eliminado");
+		
+	}
+	@Override
+	public void modificarContrasenaMaestra(String contrasena) {
+		persistencia.modificarContrasenaMaestra(contrasena);
+		
 	}
 
 }

@@ -1,5 +1,6 @@
 package servicio;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import modelo.Registro;
@@ -18,7 +19,7 @@ public interface ServicioRegistro {
 	 * @return contrasenaMaestra
 	 * @throws IOException 
 	 */
-	Usuario leerContrasenaMaestra() throws IOException; 
+	Usuario leerUsuario() throws IOException; 
 	/**
 	 * Creamos la ContrasenaMaestra
 	 * @param contrasena
@@ -26,6 +27,17 @@ public interface ServicioRegistro {
 	
 	void crearContrasenaMaestra(String contrasena);
 	
+	/**
+	 * Elimina registro bdd
+	 * @param registro
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 */
+	void eliminarRegistro(Registro registro); 
 
+	/**
+	 * Modifica la contrasena maestra 
+	 */
+	public void modificarContrasenaMaestra(String contrasena);
 
 }

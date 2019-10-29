@@ -2,10 +2,12 @@ package persistencia.impl;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import modelo.Registro;
@@ -14,15 +16,13 @@ import persistencia.Persistencia;
 
 public class PersistenciaImpl implements Persistencia {
 
-	String bdd = "bdd.txt";
-
+	File bdd = new File("bdd.txt");
 
 	@Override
 	public void crearContrasenaMaestra(String contraseña) {
 
 		try {
-			File archivo = new File("bddVacia.txt");
-			FileWriter escribir = new FileWriter(archivo, true);
+			FileWriter escribir = new FileWriter(bdd, true);
 			escribir.write(contraseña);
 			escribir.close();
 		} // Si existe un problema al escribir cae aqui
@@ -32,12 +32,13 @@ public class PersistenciaImpl implements Persistencia {
 	}
 
 	@Override
-	public Usuario leerContrasenaMaestra() throws IOException {
+	public Usuario leerUsuario() {
 		String cadena;
 		FileReader f;
 		BufferedReader b = null;
 		int contador = 0;
 		Usuario usuario = new Usuario();
+		ArrayList<Registro> listaRegistro = new ArrayList<>();
 		try {
 			f = new FileReader(bdd);
 			b = new BufferedReader(f);
@@ -46,26 +47,32 @@ public class PersistenciaImpl implements Persistencia {
 					usuario.setContrasenaMaestra(cadena);
 					contador++;
 				} else {
-					ArrayList<Registro> listaRegistro = new ArrayList<>();
+
 					Registro registro = new Registro();
 					String[] registros = cadena.split("#");
-					registro.setTitulo(registros[0]);
-					registro.setNombreUsuario(registros[1]);
-					registro.setContrasena(registros[2]);
-					registro.setURL(registros[3]);
+					registro.setId(Integer.valueOf(registros[0]));
+					registro.setTitulo(registros[1]);
+					registro.setNombreUsuario(registros[2]);
+					registro.setContrasena(registros[3]);
+					registro.setURL(registros[4]);
 
 					listaRegistro.add(registro);
-
-					usuario.setRegistros(listaRegistro);
-
 				}
 			}
+
+			usuario.setRegistros(listaRegistro);
 		} catch (FileNotFoundException e) {
-			throw new FileNotFoundException("ERROR LEER CONTRASENA MAESTRA" + e);
+			e.toString();
+
 		} catch (IOException e) {
-			throw new FileNotFoundException("ERROR LEER CONTRASENA MAESTRA" + e);
+			e.printStackTrace();
 		} finally {
-			b.close();
+			try {
+				b.close();
+			} catch (IOException e) {
+				System.out.println("ERROR LEERUSUARIO" + e.toString());
+				e.printStackTrace();
+			}
 		}
 		return usuario;
 	}
@@ -73,19 +80,103 @@ public class PersistenciaImpl implements Persistencia {
 	@Override
 	public void crearRegistro(Registro registro) {
 		try {
-			File archivo = new File("bddVacia.txt");
-			FileWriter escribir = new FileWriter(archivo, true);
-
-			escribir.write("\n" + registro.getTitulo()+"#");
-			escribir.write(registro.getNombreUsuario()+"#");
-			escribir.write(registro.getContrasena()+"#");
+			FileWriter escribir = new FileWriter(bdd, true);
+			escribir.write("\n" + registro.getId() + "#");
+			escribir.write(registro.getTitulo() + "#");
+			escribir.write(registro.getNombreUsuario() + "#");
+			escribir.write(registro.getContrasena() + "#");
 			escribir.write(registro.getURL());
 			escribir.close();
-		} // Si existe un problema al escribir cae aqui
-		catch (Exception e) {
-			System.out.println("Error al crear registro ");
+		} catch (Exception e) {
+			System.out.println("Error al crear registro " + e.toString());
 		}
-		
+
+	}
+
+	@Override
+	public void eliminarRegistro(Registro registr) {
+		Usuario usuario = leerUsuario();
+		ArrayList<Registro> rgs = (ArrayList<Registro>) usuario.getRegistros();
+		try {
+
+			for (int i = 0; i < usuario.getRegistros().size(); i++) {
+				if (usuario.getRegistros().get(i).getId() == registr.getId()) {
+					rgs.remove(i);
+				}
+			}
+			if (rgs.size() > 0) {
+				for (Registro registro2 : rgs) {
+					borrarTxt(bdd);
+					crearContrasenaMaestra(usuario.getContrasenaMaestra());
+					crearRegistro(registro2);
+				}
+			} else {
+				borrarTxt(bdd);
+				crearContrasenaMaestra(usuario.getContrasenaMaestra());
+			}
+
+		} catch (IOException e) {
+			System.out.println("Error eliminar registro" + e.toString());
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void modificarContrasenaMaestra(String contrasena) {
+		Usuario usuario = leerUsuario();
+		usuario.setContrasenaMaestra(contrasena);
+		try {
+			borrarTxt(bdd);
+			for (Registro registro : usuario.getRegistros()) {
+				crearContrasenaMaestra(usuario.getContrasenaMaestra());
+				crearRegistro(registro);
+			}
+		} catch (IOException e) {
+			System.out.println("Error modificar contraseña" + e.toString());
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void modificarRegistro(Registro reg) {
+		Usuario usuario = leerUsuario();
+		try {
+			borrarTxt(bdd);
+			for (Registro registro : usuario.getRegistros()) {
+				if (reg.getId() == registro.getId()) {
+					registro.setContrasena(reg.getContrasena());
+					registro.setNombreUsuario(reg.getTitulo());
+					registro.setTitulo(reg.getTitulo());
+					registro.setURL(reg.getURL());
+				}
+			}
+
+			for (Registro registro : usuario.getRegistros()) {
+				crearContrasenaMaestra(usuario.getContrasenaMaestra());
+				crearRegistro(registro);
+			}
+
+		} catch (IOException e) {
+			System.out.println("Error modificar contraseña" + e.toString());
+			e.printStackTrace();
+		}
+
+	}
+
+	public void borrarTxt(File fileImport) throws IOException {
+		FileInputStream fileStream = null;
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(fileImport);
+			writer.print("");
+			fileStream = new FileInputStream(fileImport);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			writer.close();
+		}
 	}
 
 }

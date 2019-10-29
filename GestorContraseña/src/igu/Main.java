@@ -1,6 +1,9 @@
 package igu;
 
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import modelo.Registro;
 import servicio.impl.ServiceRegistroImpl;
 
@@ -10,17 +13,34 @@ public class Main {
 
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException, IOException  {
 		ServiceRegistroImpl service = new ServiceRegistroImpl();
-		//			Usuario usuario = service.leerContrasenaMaestra();
+		
+		// LEER CONTRASEÑA MAESTRA 
+		//Usuario usuario = service.leerContrasenaMaestra();
 //			System.out.println(usuario.getContrasenaMaestra());
-//		service.crearContrasenaMaestra("holaMundo");
+		
+		//CREAR CONTRASEÑA POR PRIMERA VEZ 
+//		service.crearContrasenaMaestra("HALOOO");
+		
+		
 		Registro registro = new Registro();
+		registro.setId(2);
 		registro.setTitulo("Facebook");
 		registro.setNombreUsuario("LauraM");
 		registro.setContrasena("contraseña");
 		registro.setURL("http://facebook.com");
-		service.crearRegistro(registro);
+		
+		//CREAR REGISTRO
+//		service.crearRegistro(registro);
+		
+		//ELIMINAR REGISTRO
+//		service.eliminarRegistro(registro);
+		
+		//Modificar Contraseña 
+		service.modificarContrasenaMaestra("EYYYYYY");
 	}
+	
+	
 
 }
