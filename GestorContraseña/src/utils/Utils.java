@@ -7,15 +7,69 @@ import java.io.PrintWriter;
 import java.security.Key;
 import java.security.MessageDigest;
 import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 
 public class Utils {
+	
 
-	private static final String ALGORITHM = "AES";
-	private static final byte[] keyValue = "ADBSJHJS12547896".getBytes();
+	
+	private static String keyValue = "92AE31A79FEEB2A3"; //llave
+	private static String iv = "0123456789ABCDEF"; // vector de inicialización
+
+	// Definición del tipo de algoritmo a utilizar (AES, DES, RSA)
+	private final static String ALGORITHM = "AES";
+	// Definición del modo de cifrado a utilizar
+	private final static String cI = "AES/CBC/PKCS5Padding";
+
+	/**
+	 * Función de tipo String que recibe una llave (key), un vector de
+	 * inicialización (iv) y el texto que se desea cifrar
+	 * 
+	 * @param keyValue       la llave en tipo String a utilizar
+	 * @param iv        el vector de inicialización a utilizar
+	 * @param cleartext el texto sin cifrar a encriptar
+	 * @return el texto cifrado en modo String
+	 * @throws Exception puede devolver excepciones de los siguientes tipos:
+	 *                   NoSuchAlgorithmException, InvalidKeyException,
+	 *                   InvalidAlgorithmParameterException,
+	 *                   IllegalBlockSizeException, BadPaddingException,
+	 *                   NoSuchPaddingException
+	 */
+	public static String encriptar(String cleartext) throws Exception {
+		Cipher cipher = Cipher.getInstance(cI);
+		SecretKeySpec skeySpec = new SecretKeySpec(keyValue.getBytes(), ALGORITHM);
+		IvParameterSpec ivParameterSpec = new IvParameterSpec(iv.getBytes());
+		cipher.init(Cipher.ENCRYPT_MODE, skeySpec, ivParameterSpec);
+		byte[] encrypted = cipher.doFinal(cleartext.getBytes());
+		return new String(Base64.encodeBase64(encrypted));
+	}
+
+	/**
+	 * Función de tipo String que recibe una llave (key), un vector de
+	 * inicialización (iv) y el texto que se desea descifrar
+	 * 
+	 * @param keyValue       la llave en tipo String a utilizar
+	 * @param iv        el vector de inicialización a utilizar
+	 * @param encrypted el texto cifrado en modo String
+	 * @return el texto desencriptado en modo String
+	 * @throws Exception puede devolver excepciones de los siguientes tipos:
+	 *                   NoSuchAlgorithmException, NoSuchPaddingException,
+	 *                   InvalidKeyException, InvalidAlgorithmParameterException,
+	 *                   IllegalBlockSizeException
+	 */
+	public static String desencriptar(String encrypted) throws Exception {
+		Cipher cipher = Cipher.getInstance(cI);
+		SecretKeySpec skeySpec = new SecretKeySpec(keyValue.getBytes(), ALGORITHM);
+		IvParameterSpec ivParameterSpec = new IvParameterSpec(iv.getBytes());
+		byte[] enc = Base64.decodeBase64(encrypted);
+		cipher.init(Cipher.DECRYPT_MODE, skeySpec, ivParameterSpec);
+		byte[] decrypted = cipher.doFinal(enc);
+		return new String(decrypted);
+	}
 
 	public void encriptarContrasena(String password) {
 
@@ -43,44 +97,6 @@ public class Utils {
 		}
 	}
 
-	/**
-	 * @param args
-	 * @throws Exception
-	 */
-
-	public static String encriptar(String valueToEnc) throws Exception {
-
-		Key key = generateKey();
-		Cipher c = Cipher.getInstance(ALGORITHM);
-		c.init(Cipher.ENCRYPT_MODE, key);
-
-	//	System.out.println("valueToEnc.getBytes().length " + valueToEnc.getBytes().length);
-		byte[] encValue = c.doFinal(valueToEnc.getBytes());
-	//	System.out.println("encValue length" + encValue.length);
-		byte[] encryptedByteValue = new Base64().encode(encValue);
-		String encryptedValue = encryptedByteValue.toString();
-	//	System.out.println("encryptedValue " + encryptedValue);
-
-		return encryptedValue;
-	}
-
-	public static String desencriptar(String encryptedValue) throws Exception {
-		Key key = generateKey();
-		Cipher c = Cipher.getInstance(ALGORITHM);
-		c.init(Cipher.DECRYPT_MODE, key);
-
-		byte[] enctVal = c.doFinal(encryptedValue.getBytes());
-	//	System.out.println("enctVal length " + enctVal.length);
-
-		byte[] decordedValue = new Base64().decode(enctVal);
-
-		return decordedValue.toString();
-	}
-
-	private static Key generateKey() throws Exception {
-		Key key = new SecretKeySpec(keyValue, ALGORITHM);
-		return key;
-	}
 
 	public static void borrarTxt(File fileImport) throws IOException {
 		FileInputStream fileStream = null;
