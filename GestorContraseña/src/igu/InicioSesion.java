@@ -2,13 +2,14 @@ package igu;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import static javax.swing.JOptionPane.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
@@ -32,9 +33,12 @@ public class InicioSesion extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+		
+
 			public void run() {
 				try {
-					InicioSesion frame = new InicioSesion();
+					InicioSesion frame;
+					frame = new InicioSesion();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,7 +52,7 @@ public class InicioSesion extends JFrame {
 	 */
 	public InicioSesion() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 360);
+		setBounds(100, 100, 351, 259);
 		getContentPane().add(getPanel(), BorderLayout.CENTER);
 	}
 	private JPanel getPanel() {
@@ -64,7 +68,7 @@ public class InicioSesion extends JFrame {
 	private JButton getBotonIniciarSesion() {
 		if (botonIniciarSesion == null) {
 			botonIniciarSesion = new JButton("Iniciar Sesíon");
-			botonIniciarSesion.setBounds(115, 162, 157, 23);
+			botonIniciarSesion.setBounds(101, 146, 157, 23);
 			botonIniciarSesion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					String contrasenia=getPasswordField().getText().trim();
@@ -78,6 +82,15 @@ public class InicioSesion extends JFrame {
 						if(contraseniaDesencriptada.equals(contrasenia))
 						{
 							System.out.println("Sesion Iniciada");
+							new registrosGUI().setVisible(true);
+							dispose();
+						
+						}
+						else
+						{
+							System.out.println("Contraseña erronea");
+							   JOptionPane.showMessageDialog(new JFrame(), "Contraseña Incorrecta :(", "Error",
+								        JOptionPane.ERROR_MESSAGE);
 						}
 						//System.out.println(claveDesemcriptada);
 					} catch (IOException e) {
@@ -98,14 +111,14 @@ public class InicioSesion extends JFrame {
 	private JLabel getLblContrasea() {
 		if (lblContrasea == null) {
 			lblContrasea = new JLabel("Contrase\u00F1a");
-			lblContrasea.setBounds(47, 86, 122, 14);
+			lblContrasea.setBounds(21, 86, 122, 14);
 		}
 		return lblContrasea;
 	}
 	private JPasswordField getPasswordField() {
 		if (passwordField == null) {
 			passwordField = new JPasswordField();
-			passwordField.setBounds(179, 83, 122, 20);
+			passwordField.setBounds(115, 83, 199, 20);
 		}
 		return passwordField;
 	}

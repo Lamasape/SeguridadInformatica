@@ -47,7 +47,7 @@ public class Main {
 //		service.eliminarRegistro(registro);
 
 		// Modificar Contraseña
-		//service.modificarContrasenaMaestra("lolqhoij");
+		service.modificarContrasenaMaestra("maestro");
 		Persistencia persistencia=new PersistenciaImpl();
 		String contra=persistencia.leerUsuario().getContrasenaMaestra();
 		System.out.println("Contraseña encriptada: "+contra);
