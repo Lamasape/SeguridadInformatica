@@ -35,7 +35,7 @@ public class InicioSesion extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-		
+
 
 			public void run() {
 				try {
@@ -76,7 +76,7 @@ public class InicioSesion extends JFrame {
 					String contrasenia=getPasswordField().getText().trim();
 					System.out.println("Contraseña digitada: "+contrasenia);
 					Persistencia persistencia= new PersistenciaImpl();
-					
+
 					try {
 						String contraseniaEncriptada=persistencia.leerUsuario().getContrasenaMaestra();
 						String contraseniaDesencriptada=Utils.desencriptar(contraseniaEncriptada);
@@ -106,7 +106,7 @@ public class InicioSesion extends JFrame {
 						{
 							System.out.println("Contraseña erronea");
 							JOptionPane.showMessageDialog(new JFrame(), "Contraseña Incorrecta :(", "Error",
-							JOptionPane.ERROR_MESSAGE);
+									JOptionPane.ERROR_MESSAGE);
 						}
 						//System.out.println(claveDesemcriptada);
 					} catch (IOException e) {
@@ -116,9 +116,7 @@ public class InicioSesion extends JFrame {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}					
-
 					// TODO Auto-generated catch block
-
 				}
 			});
 		}

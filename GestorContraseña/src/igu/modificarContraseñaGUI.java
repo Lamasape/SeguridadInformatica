@@ -121,11 +121,15 @@ public class modificarContraseñaGUI extends JFrame {
 						{
 							if(UtilsContraseñaVerifications.verSiEsLaMisma(contra1, contra2))///Ver si las dos contraseñas coinciden
 							{
-								ServicioRegistro servicio= new ServiceRegistroImpl();
-								servicio.modificarContrasenaMaestra(getPasswordField().getText());
-								new registrosGUI().setVisible(true);
-								JOptionPane.showMessageDialog(new JFrame(), "Contraseña cambiada exitosamente.", "Exito!",JOptionPane.DEFAULT_OPTION);
-								dispose();
+								if(UtilsContraseñaVerifications.verificarContrasenia(Utils.desencriptar(contra1).toCharArray()))///Ver estandares para ver si la contraseña es segura
+								{
+									ServicioRegistro servicio= new ServiceRegistroImpl();
+									servicio.modificarContrasenaMaestra(getPasswordField().getText());
+									new registrosGUI().setVisible(true);
+									JOptionPane.showMessageDialog(new JFrame(), "Contraseña cambiada exitosamente.", "Exito!",JOptionPane.DEFAULT_OPTION);
+									dispose();
+								}
+								
 							}
 							else
 							{
