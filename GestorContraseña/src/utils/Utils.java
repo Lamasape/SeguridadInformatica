@@ -97,6 +97,30 @@ public class Utils {
 		}
 	}
 
+	public void encriptarContrasena2(String password) {
+		MessageDigest md = null;
+		try {
+			// SHA-512
+			md = MessageDigest.getInstance("SHA-512");
+			md.update(password.getBytes());
+			byte[] mb = md.digest();
+			System.out.println(Hex.encodeHex(mb));
+
+			// SHA-1
+			md = MessageDigest.getInstance("SHA-1");
+			md.update(password.getBytes());
+			mb = md.digest();
+			System.out.println(Hex.encodeHex(mb));
+
+			// MD5
+			md = MessageDigest.getInstance("MD5");
+			md.update(password.getBytes());
+			mb = md.digest();
+			System.out.println(Hex.encodeHex(mb));
+		} catch (Exception e) {
+			System.out.println("NO SE PUDO ENCRIPTAR" + e.toString());
+		}
+	}
 
 	public static void borrarTxt(File fileImport) throws IOException {
 		FileInputStream fileStream = null;
@@ -109,6 +133,21 @@ public class Utils {
 			ex.printStackTrace();
 		} finally {
 			writer.close();
+		}
+	}
+	/**
+	 *Funcion que recibe un vector de caracteres, y les pone el valor 0, para practicamente vaciarlo
+	 * Importante cuando se maneja informacion sensible por memoria, puesto a que si se utiliza una variable primitiva
+	 * String, la contraseña puede verse en memoria claramente
+	 * @param contrasenia  El vector, que contiene la contrasenia
+	 * @return El propio vector se modifica; se retorna el mismo vector pero vacio.
+	 * **/
+	public static void limpiarContraseñaDeLaMemoria(char[] contrasenia)
+	{
+		//System.out.println(contrasenia);
+		for(int i=0; i<contrasenia.length;i++)
+		{
+			contrasenia[i]=0;
 		}
 	}
 

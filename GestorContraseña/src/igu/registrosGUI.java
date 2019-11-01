@@ -55,46 +55,46 @@ public class registrosGUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
+
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.CENTER);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
+				gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(29)
-					.addComponent(getScrollPane(), GroupLayout.PREFERRED_SIZE, 248, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-					.addComponent(getBtnAbrirPlataforma(), GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
+						.addGap(29)
+						.addComponent(getScrollPane(), GroupLayout.PREFERRED_SIZE, 248, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+						.addComponent(getBtnAbrirPlataforma(), GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap())
+				);
 		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.TRAILING)
+				gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(65)
-							.addComponent(getScrollPane(), GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(100)
-							.addComponent(getBtnAbrirPlataforma(), GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(82, Short.MAX_VALUE))
-		);
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup()
+										.addGap(65)
+										.addComponent(getScrollPane(), GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel.createSequentialGroup()
+										.addGap(100)
+										.addComponent(getBtnAbrirPlataforma(), GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
+						.addContainerGap(82, Short.MAX_VALUE))
+				);
 		panel.setLayout(gl_panel);
 	}
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			
+
 			table = new JTable();
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			table.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-					"Plataforma", "Nombre Usuario"
-				}
-			));
+					new Object[][] {
+					},
+					new String[] {
+							"Plataforma", "Nombre Usuario"
+					}
+					));
 			scrollPane.setViewportView(table);
 		}
 		return scrollPane;

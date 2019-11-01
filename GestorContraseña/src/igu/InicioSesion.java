@@ -18,6 +18,8 @@ import persistencia.impl.PersistenciaImpl;
 import utils.Utils;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
@@ -79,18 +81,32 @@ public class InicioSesion extends JFrame {
 						String contraseniaEncriptada=persistencia.leerUsuario().getContrasenaMaestra();
 						String contraseniaDesencriptada=Utils.desencriptar(contraseniaEncriptada);
 						System.out.println("Contraseña que está en la base de datos: "+contraseniaEncriptada);
-						if(contraseniaDesencriptada.equals(contrasenia))
+						if(contraseniaEncriptada.equals(Utils.encriptar(contrasenia)))
 						{
-							System.out.println("Sesion Iniciada");
-							new registrosGUI().setVisible(true);
-							dispose();
-						
+							LocalDate fechaCreacionContra=persistencia.leerUsuario().getFechaDeCreacionContraseña();
+							LocalDate date=LocalDate.now();
+							long diferencia=ChronoUnit.DAYS.between(fechaCreacionContra, date);
+							if(diferencia<0)//Just in case xdxdxdddd
+							{
+								diferencia*=-1;
+							}
+							if(diferencia>7)
+							{
+								new modificarContraseñaGUI("Su contraseña ha expirado, por favor ingresar una contraseña nueva").setVisible(true);
+								dispose();
+							}
+							else
+							{
+								System.out.println("Sesion Iniciada");
+								new registrosGUI().setVisible(true);
+								dispose();
+							}
 						}
 						else
 						{
 							System.out.println("Contraseña erronea");
-							   JOptionPane.showMessageDialog(new JFrame(), "Contraseña Incorrecta :(", "Error",
-								        JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(new JFrame(), "Contraseña Incorrecta :(", "Error",
+							JOptionPane.ERROR_MESSAGE);
 						}
 						//System.out.println(claveDesemcriptada);
 					} catch (IOException e) {

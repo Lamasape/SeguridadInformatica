@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import modelo.Registro;
@@ -23,17 +24,19 @@ public class PersistenciaImpl implements Persistencia {
 		try {
 			FileWriter escribir = new FileWriter(bdd, true);
 			escribir.write(Utils.encriptar(contraseña));
+			escribir.write("\n"+LocalDate.now().toString());
 			escribir.close();
 		} // Si existe un problema al escribir cae aqui
 		catch (Exception e) {
 			System.out.println("Error al crear contraseña ");
 		}
 	}
-	public void crearContrasenaMaestra2(String contraseña) {
+	public void crearContrasenaMaestra2(String contraseña, LocalDate fechaDeCreacion) {
 
 		try {
 			FileWriter escribir = new FileWriter(bdd, true);
 			escribir.write(contraseña);
+			escribir.write(LocalDate.now().toString());
 			escribir.close();
 		} // Si existe un problema al escribir cae aqui
 		catch (Exception e) {
@@ -56,17 +59,24 @@ public class PersistenciaImpl implements Persistencia {
 				if (contador == 0) {
 					usuario.setContrasenaMaestra(cadena);
 					contador++;
-				} else {
-
-					Registro registro = new Registro();
-					String[] registros = cadena.split("#");
-					registro.setId(Integer.valueOf(registros[0]));
-					registro.setTitulo(registros[1]);
-					registro.setNombreUsuario(registros[2]);
-					registro.setContrasena(registros[3]);
-					registro.setURL(registros[4]);
-
-					listaRegistro.add(registro);
+				} else
+				{
+					if(contador==1)
+					{
+						usuario.setFechaDeCreacionContraseña(LocalDate.parse(cadena));
+						contador++;
+					}
+					else
+					{
+						Registro registro = new Registro();
+						String[] registros = cadena.split("#");
+						registro.setId(Integer.valueOf(registros[0]));
+						registro.setTitulo(registros[1]);
+						registro.setNombreUsuario(registros[2]);
+						registro.setContrasena(registros[3]);
+						registro.setURL(registros[4]);
+						listaRegistro.add(registro);
+					}
 				}
 			}
 
@@ -105,7 +115,7 @@ public class PersistenciaImpl implements Persistencia {
 		}
 
 	}
-public void crearRegistro2(Registro registro) {
+	public void crearRegistro2(Registro registro) {
 		try {
 			FileWriter escribir = new FileWriter(bdd, true);
 			escribir.write("\n" + registro.getId() + "#");
@@ -134,12 +144,12 @@ public void crearRegistro2(Registro registro) {
 			if (rgs.size() > 0) {
 				for (Registro registro2 : rgs) {
 					Utils.borrarTxt(bdd);
-					crearContrasenaMaestra2(usuario.getContrasenaMaestra());
+					crearContrasenaMaestra2(usuario.getContrasenaMaestra(), usuario.getFechaDeCreacionContraseña());
 					crearRegistro2(registro2);
 				}
 			} else {
 				Utils.borrarTxt(bdd);
-				crearContrasenaMaestra2(usuario.getContrasenaMaestra());
+				crearContrasenaMaestra2(usuario.getContrasenaMaestra(), usuario.getFechaDeCreacionContraseña());
 			}
 
 		} catch (IOException e) {
@@ -156,15 +166,15 @@ public void crearRegistro2(Registro registro) {
 		try {
 			usuario.setContrasenaMaestra((Utils.encriptar(contrasena)));
 			Utils.borrarTxt(bdd);
+			crearContrasenaMaestra(contrasena);
 			if (usuario.getRegistros().size() > 0) {
 				for (Registro registro : usuario.getRegistros()) {
-					crearContrasenaMaestra2(usuario.getContrasenaMaestra());
 					crearRegistro2(registro);
 				}
 
 			} else {
 				Utils.borrarTxt(bdd);
-				crearContrasenaMaestra2(usuario.getContrasenaMaestra());
+				crearContrasenaMaestra(contrasena);
 			}
 		} catch (IOException e) {
 			System.out.println("Error modificar contraseña" + e.toString());
@@ -191,7 +201,7 @@ public void crearRegistro2(Registro registro) {
 			}
 
 			for (Registro registro : usuario.getRegistros()) {
-				crearContrasenaMaestra2(usuario.getContrasenaMaestra());
+				crearContrasenaMaestra2(usuario.getContrasenaMaestra(),usuario.getFechaDeCreacionContraseña());
 				crearRegistro2(registro);
 			}
 
