@@ -156,6 +156,19 @@ public class modificarContraseñaGUI extends JFrame {
 	private JButton getBtnCancelar() {
 		if (btnCancelar == null) {
 			btnCancelar = new JButton("Cancelar");
+			btnCancelar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (getLabel_1().getText().equals("Llene los siguientes campos para cambiar la contraseña"))
+					{
+						new registrosGUI().setVisible(true);
+					}
+					else
+					{
+						new InicioSesion().setVisible(true);
+					}
+					dispose();
+				}
+			});
 			btnCancelar.setBounds(106, 188, 89, 23);
 		}
 		return btnCancelar;
