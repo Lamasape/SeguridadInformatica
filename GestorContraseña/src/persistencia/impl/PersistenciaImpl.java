@@ -36,7 +36,19 @@ public class PersistenciaImpl implements Persistencia {
 		try {
 			FileWriter escribir = new FileWriter(bdd, true);
 			escribir.write(contraseña);
-			escribir.write(LocalDate.now().toString());
+			escribir.write("\n"+LocalDate.now().toString());
+			escribir.close();
+		} // Si existe un problema al escribir cae aqui
+		catch (Exception e) {
+			System.out.println("Error al crear contraseña ");
+		}
+	}
+	public void crearContrasenaMaestra3(String contraseña, LocalDate fechaDeCreacion) {
+
+		try {
+			FileWriter escribir = new FileWriter(bdd, true);
+			escribir.write(contraseña);
+			escribir.write("\n"+fechaDeCreacion);
 			escribir.close();
 		} // Si existe un problema al escribir cae aqui
 		catch (Exception e) {

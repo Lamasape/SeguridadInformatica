@@ -40,17 +40,17 @@ public class Main {
 		
 		
 		// CREAR REGISTRO
-		/*
+		
 		Registro registro = new Registro();
 		registro.setId(2);
 		registro.setTitulo("Facebook");
-		registro.setNombreUsuario("Santiago");
+		registro.setNombreUsuario("pop");
 		registro.setContrasena("lel");
-		registro.setURL("http://facebook.com");
+		registro.setURL("http://twitter.com");
 
 		
 		service.crearRegistro(registro);
-		 */
+		 
 		// ELIMINAR REGISTRO
 //		service.eliminarRegistro(registro);
 
@@ -93,7 +93,6 @@ public class Main {
 		Utils.limpiarContraseñaDeLaMemoria(input);
 		System.out.println(cadena);//Despues de limpiar la contraseña de la memoria
 		*/
-
 	}
 
 	

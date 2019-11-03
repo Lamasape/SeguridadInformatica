@@ -6,12 +6,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.Key;
 import java.security.MessageDigest;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
+
+import persistencia.Persistencia;
+import persistencia.impl.PersistenciaImpl;
 
 public class Utils {
 	
@@ -149,6 +155,20 @@ public class Utils {
 		{
 			contrasenia[i]=0;
 		}
+	}
+	/**
+	 * Funcion que da los dias de diferencia de una fecha con la actual
+	 * @return
+	 */
+	public long diasDeDiferencia(LocalDate fechaPasada)
+	{
+		LocalDate date=LocalDate.now();
+		long diferencia=ChronoUnit.DAYS.between(fechaPasada, date);
+		if(diferencia<0)//Just in case xdxdxdddd
+		{
+			diferencia*=-1;
+		}
+		return diferencia;
 	}
 
 }

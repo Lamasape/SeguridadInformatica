@@ -38,6 +38,7 @@ public class modificarContraseñaGUI extends JFrame {
 	private JButton btnCancelar;
 	private JLabel label_1;
 	private String labelMessage;
+	private boolean primeraVez;
 	/**
 	 * Launch the application.
 	 */
@@ -45,7 +46,7 @@ public class modificarContraseñaGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					modificarContraseñaGUI frame = new modificarContraseñaGUI("");
+					modificarContraseñaGUI frame = new modificarContraseñaGUI("", false);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,7 +58,8 @@ public class modificarContraseñaGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public modificarContraseñaGUI(String cadena) {
+	public modificarContraseñaGUI(String cadena, boolean primeraVez) {
+		this.primeraVez=primeraVez;
 		this.labelMessage=cadena;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 276);
@@ -124,8 +126,15 @@ public class modificarContraseñaGUI extends JFrame {
 								if(UtilsContraseñaVerifications.verificarContrasenia(Utils.desencriptar(contra1).toCharArray()))///Ver estandares para ver si la contraseña es segura
 								{
 									ServicioRegistro servicio= new ServiceRegistroImpl();
-									servicio.modificarContrasenaMaestra(getPasswordField().getText());
-									new registrosGUI().setVisible(true);
+									if(primeraVez)
+									{
+										servicio.crearContrasenaMaestra(getPasswordField().getText());
+									}
+									else
+									{
+										servicio.modificarContrasenaMaestra(getPasswordField().getText());
+									}
+									new registroGUI().setVisible(true);
 									JOptionPane.showMessageDialog(new JFrame(), "Contraseña cambiada exitosamente.", "Exito!",JOptionPane.DEFAULT_OPTION);
 									dispose();
 								}
@@ -160,7 +169,7 @@ public class modificarContraseñaGUI extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (getLabel_1().getText().equals("Llene los siguientes campos para cambiar la contraseña"))
 					{
-						new registrosGUI().setVisible(true);
+						new registroGUI().setVisible(true);
 					}
 					else
 					{

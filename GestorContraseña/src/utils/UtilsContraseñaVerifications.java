@@ -1,5 +1,7 @@
 package utils;
 
+import java.io.File;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -82,6 +84,12 @@ public class UtilsContraseñaVerifications {
 		}
 		return false;
 	}
+
+	public static boolean verSiElArchivoExisteOSiEstaVacio()
+	{
+		File bdd = new File("bdd.txt");
+		return (bdd.exists() && bdd.length()>0) ;
+	}
 	/**
 	 * Funcion para ver si un string tiene por lo menos 8 digitos
 	 * @param contrasenia
@@ -96,5 +104,6 @@ public class UtilsContraseñaVerifications {
 		}
 		return false;
 	}
+	
 	
 }

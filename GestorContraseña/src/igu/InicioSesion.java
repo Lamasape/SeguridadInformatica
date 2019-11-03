@@ -16,6 +16,8 @@ import java.awt.FlowLayout;
 import persistencia.Persistencia;
 import persistencia.impl.PersistenciaImpl;
 import utils.Utils;
+import utils.UtilsContraseñaVerifications;
+
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -39,9 +41,17 @@ public class InicioSesion extends JFrame {
 
 			public void run() {
 				try {
-					InicioSesion frame;
-					frame = new InicioSesion();
-					frame.setVisible(true);
+					
+					if(UtilsContraseñaVerifications.verSiElArchivoExisteOSiEstaVacio())
+					{
+						InicioSesion frame;
+						frame = new InicioSesion();
+						frame.setVisible(true);
+					}
+					else
+					{
+						new modificarContraseñaGUI("No existe ninguna contraseña maestra, crear una", true).setVisible(true);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -92,13 +102,13 @@ public class InicioSesion extends JFrame {
 							}
 							if(diferencia>7)
 							{
-								new modificarContraseñaGUI("Su contraseña ha expirado, por favor ingresar una contraseña nueva").setVisible(true);
+								new modificarContraseñaGUI("Su contraseña ha expirado, por favor ingresar una contraseña nueva", false).setVisible(true);
 								dispose();
 							}
 							else
 							{
 								System.out.println("Sesion Iniciada");
-								new registrosGUI().setVisible(true);
+								new registroGUI().setVisible(true);
 								dispose();
 							}
 						}
