@@ -31,6 +31,8 @@ public class Utils {
 	// Definición del modo de cifrado a utilizar
 	private final static String cI = "AES/CBC/PKCS5Padding";
 
+	
+	
 	/**
 	 * Función de tipo String que recibe una llave (key), un vector de
 	 * inicialización (iv) y el texto que se desea cifrar

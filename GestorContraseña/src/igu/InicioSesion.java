@@ -6,8 +6,12 @@ import static javax.swing.JOptionPane.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import javafx.scene.shape.Path;
+
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
@@ -19,7 +23,12 @@ import utils.Utils;
 import utils.UtilsContraseñaVerifications;
 
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.awt.event.ActionEvent;
@@ -31,6 +40,8 @@ public class InicioSesion extends JFrame {
 	private JButton botonIniciarSesion;
 	private JLabel lblContrasea;
 	private JPasswordField passwordField;
+	private JButton btnImprotarInfo;
+	private JButton btnExportarInfo;
 
 	/**
 	 * Launch the application.
@@ -74,6 +85,8 @@ public class InicioSesion extends JFrame {
 			panel.add(getBotonIniciarSesion());
 			panel.add(getLblContrasea());
 			panel.add(getPasswordField());
+			panel.add(getBtnImprotarInfo());
+			panel.add(getBtnExportarInfo());
 		}
 		return panel;
 	}
@@ -145,5 +158,57 @@ public class InicioSesion extends JFrame {
 			passwordField.setBounds(115, 83, 199, 20);
 		}
 		return passwordField;
+	}
+	private JButton getBtnImprotarInfo() {
+		if (btnImprotarInfo == null) {
+			btnImprotarInfo = new JButton("Importar Info");
+			btnImprotarInfo.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JFileChooser fc= new JFileChooser();
+					fc.setCurrentDirectory(new java.io.File("."));
+					fc.setDialogTitle("Seleccionar archivo para importar");
+					fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					if(fc.showOpenDialog(btnImprotarInfo)==JFileChooser.APPROVE_OPTION)
+					{
+						System.out.println("You selected: "+ fc.getSelectedFile().getAbsolutePath());
+						
+						try {
+							Files.copy(Paths.get(fc.getSelectedFile().getPath()),new PersistenciaImpl().flujoDelArchivo() );
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				}
+			});
+			btnImprotarInfo.setBounds(10, 186, 116, 23);
+		}
+		return btnImprotarInfo;
+	}
+	private JButton getBtnExportarInfo() {
+		if (btnExportarInfo == null) {
+			btnExportarInfo = new JButton("Exportar Info");
+			btnExportarInfo.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JFileChooser fc= new JFileChooser();
+					fc.setCurrentDirectory(new java.io.File("."));
+					fc.setDialogTitle("Seleccionar Carpeta para exportar");
+					fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					if(fc.showOpenDialog(btnImprotarInfo)==JFileChooser.APPROVE_OPTION)
+					{
+						System.out.println("You selected: "+ fc.getSelectedFile().getAbsolutePath());
+						
+						try {
+							Files.copy(Paths.get(new PersistenciaImpl().getBdd().getPath()), new FileOutputStream(new File(fc.getSelectedFile().getAbsolutePath()+"\\bdd.txt")) );
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				}
+			});
+			btnExportarInfo.setBounds(202, 186, 112, 23);
+		}
+		return btnExportarInfo;
 	}
 }

@@ -230,9 +230,7 @@ public class registroGUI extends JFrame {
 					}
 					else
 					{
-						try {
-							
-							
+						try {		
 							Registro registro=new ServiceRegistroImpl().leerUsuario().getRegistros().get(table_1.getSelectedRow());
 							String nombreDeUsuario=registro.getNombreUsuario();
 							String url=registro.getURL();

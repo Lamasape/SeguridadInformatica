@@ -1,6 +1,7 @@
 package utils;
 
 import java.io.File;
+import java.nio.file.Files;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -67,6 +68,8 @@ public class UtilsContraseñaVerifications {
 		
 		return false;
 	}
+
+	
 	/**
 	 * Función que mira si una cadena de caracteres tiene por lo menos una minuscula
 	 * @param contrasenia

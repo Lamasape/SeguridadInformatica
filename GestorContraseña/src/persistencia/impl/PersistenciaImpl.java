@@ -3,9 +3,11 @@ package persistencia.impl;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -17,7 +19,16 @@ import utils.Utils;
 public class PersistenciaImpl implements Persistencia {
 
 	File bdd = new File("bdd.txt");
-
+	public OutputStream flujoDelArchivo() 
+	{
+		try {
+			return new FileOutputStream(bdd);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	@Override
 	public void crearContrasenaMaestra(String contraseña) {
 		System.out.println("Contraseña Creada 1");
@@ -225,6 +236,12 @@ public class PersistenciaImpl implements Persistencia {
 			e.printStackTrace();
 		}
 
+	}
+	public File getBdd() {
+		return bdd;
+	}
+	public void setBdd(File bdd) {
+		this.bdd = bdd;
 	}
 
 }
