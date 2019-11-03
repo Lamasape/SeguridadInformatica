@@ -6,12 +6,19 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import modelo.Registro;
+import servicio.ServicioRegistro;
+import servicio.impl.ServiceRegistroImpl;
+import utils.Utils;
+
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class AgregarRegistroGUI extends JFrame {
 
@@ -88,6 +95,50 @@ public class AgregarRegistroGUI extends JFrame {
 	private JButton getBtnAgregarRegistro() {
 		if (btnAgregarRegistro == null) {
 			btnAgregarRegistro = new JButton("Agregar Registro");
+			btnAgregarRegistro.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+					if(nombreUsuario.getText().length()>0)
+					{
+						if(passwordField.getText().length()>0)
+						{
+							if(PaginaWeb.getText().length()>0)
+							{
+								Registro registro= new Registro();
+								try {
+									registro.setContrasena( Utils.encriptar(passwordField.getText()));
+									registro.setId(2);
+									registro.setNombreUsuario(nombreUsuario.getText());
+									registro.setURL(PaginaWeb.getText());
+									ServicioRegistro servicio=new ServiceRegistroImpl();
+									servicio.crearRegistro(registro);
+									new registroGUI().setVisible(true);
+									dispose();
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							}
+							else
+							{
+								JOptionPane.showMessageDialog(new JFrame(), "Insertar la URL o nombre de la plataforma.", "Error",JOptionPane.ERROR_MESSAGE);
+							}
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(new JFrame(), "Insertar contraseña.", "Error",JOptionPane.ERROR_MESSAGE);
+
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(new JFrame(), "Insertar nombre de usuario.", "Error",JOptionPane.ERROR_MESSAGE);
+
+					}
+
+
+				}
+			});
 			btnAgregarRegistro.setBounds(235, 209, 146, 23);
 		}
 		return btnAgregarRegistro;
