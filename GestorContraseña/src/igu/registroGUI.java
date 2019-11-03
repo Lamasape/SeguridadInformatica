@@ -230,7 +230,18 @@ public class registroGUI extends JFrame {
 					}
 					else
 					{
-						
+						try {
+							
+							
+							Registro registro=new ServiceRegistroImpl().leerUsuario().getRegistros().get(table_1.getSelectedRow());
+							String nombreDeUsuario=registro.getNombreUsuario();
+							String url=registro.getURL();
+							String contraseña= registro.getContrasena();
+							///Aqui va lo que le toca a Diego xdxdxddd
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			});
