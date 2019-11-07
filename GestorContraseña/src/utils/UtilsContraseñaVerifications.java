@@ -21,7 +21,14 @@ public class UtilsContraseñaVerifications {
 			{
 				if(UtilsContraseñaVerifications.verSiTienePorLoMenosUnaMinuscula(contra))
 				{
+					if(UtilsContraseñaVerifications.verSiTienePorLoMenosUnNumero(contra))
+					{
 					return true;
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(new JFrame(), "La contraseña debe tener por lo menos un numero. Vuelva a intentarlo", "Error!",JOptionPane.ERROR_MESSAGE);
+					}
 				}
 				else
 				{
@@ -88,6 +95,17 @@ public class UtilsContraseñaVerifications {
 		return false;
 	}
 
+	public static boolean verSiTienePorLoMenosUnNumero(char[] contrasenia)
+	{
+		for (char c : contrasenia) {
+			if (c>=48 && c<=57)
+			{
+				return true;
+			}
+				
+		}
+		return false;
+	}
 	public static boolean verSiElArchivoExisteOSiEstaVacio()
 	{
 		File bdd = new File("bdd.txt");
