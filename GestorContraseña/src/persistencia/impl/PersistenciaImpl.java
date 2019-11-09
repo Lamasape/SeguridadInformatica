@@ -29,6 +29,7 @@ public class PersistenciaImpl implements Persistencia {
 		}
 		return null;
 	}
+	
 	@Override
 	public void crearContrasenaMaestra(String contraseña) {
 		System.out.println("Contraseña Creada 1");
@@ -42,6 +43,7 @@ public class PersistenciaImpl implements Persistencia {
 			System.out.println("Error al crear contraseña ");
 		}
 	}
+	
 	public void crearContrasenaMaestra2(String contraseña, LocalDate fechaDeCreacion) {
 
 		try {
@@ -54,18 +56,19 @@ public class PersistenciaImpl implements Persistencia {
 			System.out.println("Error al crear contraseña ");
 		}
 	}
-	public void crearContrasenaMaestra3(String contraseña, LocalDate fechaDeCreacion) {
-
-		try {
-			FileWriter escribir = new FileWriter(bdd, true);
-			escribir.write(contraseña);
-			escribir.write("\n"+fechaDeCreacion);
-			escribir.close();
-		} // Si existe un problema al escribir cae aqui
-		catch (Exception e) {
-			System.out.println("Error al crear contraseña ");
-		}
-	}
+	
+//	public void crearContrasenaMaestra3(String contraseña, LocalDate fechaDeCreacion) {
+//
+//		try {
+//			FileWriter escribir = new FileWriter(bdd, true);
+//			escribir.write(contraseña);
+//			escribir.write("\n"+fechaDeCreacion);
+//			escribir.close();
+//		} // Si existe un problema al escribir cae aqui
+//		catch (Exception e) {
+//			System.out.println("Error al crear contraseña ");
+//		}
+//	}
 
 	@Override
 	public Usuario leerUsuario() {
@@ -98,6 +101,7 @@ public class PersistenciaImpl implements Persistencia {
 						registro.setNombreUsuario(registros[2]);
 						registro.setContrasena(registros[3]);
 						registro.setURL(registros[4]);
+						registro.setInputName(registros[5]);
 						listaRegistro.add(registro);
 					}
 				}
@@ -131,13 +135,15 @@ public class PersistenciaImpl implements Persistencia {
 			escribir.write(registro.getTitulo() + "#");
 			escribir.write(registro.getNombreUsuario() + "#");
 			escribir.write(Utils.encriptar(registro.getContrasena()) + "#");
-			escribir.write(registro.getURL());
+			escribir.write(registro.getURL() + "#");
+			escribir.write(registro.getInputName());
 			escribir.close();
 		} catch (Exception e) {
 			System.out.println("Error al crear registro " + e.toString());
 		}
 
 	}
+	
 	public void crearRegistro2(Registro registro) {
 		try {
 			FileWriter escribir = new FileWriter(bdd, true);
@@ -145,12 +151,12 @@ public class PersistenciaImpl implements Persistencia {
 			escribir.write(registro.getTitulo() + "#");
 			escribir.write(registro.getNombreUsuario() + "#");
 			escribir.write(registro.getContrasena() + "#");
-			escribir.write(registro.getURL());
+			escribir.write(registro.getURL() + "#");
+			escribir.write(registro.getInputName());
 			escribir.close();
 		} catch (Exception e) {
 			System.out.println("Error al crear registro " + e.toString());
 		}
-
 	}
 
 	@Override
@@ -220,6 +226,7 @@ public class PersistenciaImpl implements Persistencia {
 					registro.setNombreUsuario(reg.getTitulo());
 					registro.setTitulo(reg.getTitulo());
 					registro.setURL(reg.getURL());
+					registro.setInputName(reg.getInputName());
 				}
 			}
 
@@ -237,9 +244,11 @@ public class PersistenciaImpl implements Persistencia {
 		}
 
 	}
+	
 	public File getBdd() {
 		return bdd;
 	}
+	
 	public void setBdd(File bdd) {
 		this.bdd = bdd;
 	}

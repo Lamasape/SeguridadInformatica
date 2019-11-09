@@ -7,7 +7,10 @@ public class Registro {
 	String nombreUsuario;
 	String contrasena;
 	String URL;
+	String inputName;
 
+	
+	
 	public String getTitulo() {
 		return titulo;
 	}
@@ -48,5 +51,15 @@ public class Registro {
 		this.id = id;
 
 	}
+
+	public String getInputName() {
+		return inputName;
+	}
+
+	public void setInputName(String inputName) {
+		this.inputName = inputName;
+	}
+	
+	
 
 }
