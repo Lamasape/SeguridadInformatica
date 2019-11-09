@@ -32,6 +32,8 @@ public class AgregarRegistroGUI extends JFrame {
 	private JLabel lblNombreDeUsuario;
 	private JLabel lblContrasea;
 	private JLabel lblLlenarLosSiguientes;
+	private JTextField inputName;
+	private JLabel lblLel;
 
 	/**
 	 * Launch the application.
@@ -68,6 +70,8 @@ public class AgregarRegistroGUI extends JFrame {
 		contentPane.add(getLblNombreDeUsuario());
 		contentPane.add(getLblContrasea());
 		contentPane.add(getLblLlenarLosSiguientes());
+		contentPane.add(getInputName());
+		contentPane.add(getLblLel());
 	}
 	private JTextField getNombreUsuario() {
 		if (nombreUsuario == null) {
@@ -87,7 +91,7 @@ public class AgregarRegistroGUI extends JFrame {
 	private JTextField getPaginaWeb() {
 		if (PaginaWeb == null) {
 			PaginaWeb = new JTextField();
-			PaginaWeb.setBounds(235, 86, 146, 20);
+			PaginaWeb.setBounds(235, 62, 146, 20);
 			PaginaWeb.setColumns(10);
 		}
 		return PaginaWeb;
@@ -104,20 +108,30 @@ public class AgregarRegistroGUI extends JFrame {
 						{
 							if(PaginaWeb.getText().length()>0)
 							{
-								Registro registro= new Registro();
-								try {
-									registro.setContrasena( Utils.encriptar(passwordField.getText()));
-									registro.setId(2);
-									registro.setNombreUsuario(nombreUsuario.getText());
-									registro.setURL(PaginaWeb.getText());
-									ServicioRegistro servicio=new ServiceRegistroImpl();
-									servicio.crearRegistro(registro);
-									new registroGUI().setVisible(true);
-									dispose();
-								} catch (Exception e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
+								if(inputName.getText().length()>0)
+								{
+									Registro registro= new Registro();
+									try {
+										registro.setContrasena( Utils.encriptar(passwordField.getText()));
+										registro.setTitulo(nombreUsuario.getText());
+										registro.setId(2);
+										registro.setNombreUsuario(nombreUsuario.getText());
+										registro.setURL(PaginaWeb.getText());
+										registro.setInputName(inputName.getText());
+										ServicioRegistro servicio=new ServiceRegistroImpl();
+										servicio.crearRegistro(registro);
+										new registroGUI().setVisible(true);
+										dispose();
+									} catch (Exception e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
 								}
+								else
+								{
+									JOptionPane.showMessageDialog(new JFrame(), "Insertar el input name del inicio de sesión", "Error",JOptionPane.ERROR_MESSAGE);
+								}
+								
 							}
 							else
 							{
@@ -159,7 +173,7 @@ public class AgregarRegistroGUI extends JFrame {
 	private JLabel getLblNombreDeLa() {
 		if (lblNombreDeLa == null) {
 			lblNombreDeLa = new JLabel("Nombre o link de la plataforma :");
-			lblNombreDeLa.setBounds(38, 92, 275, 14);
+			lblNombreDeLa.setBounds(38, 68, 275, 14);
 		}
 		return lblNombreDeLa;
 	}
@@ -183,5 +197,20 @@ public class AgregarRegistroGUI extends JFrame {
 			lblLlenarLosSiguientes.setBounds(10, 26, 328, 14);
 		}
 		return lblLlenarLosSiguientes;
+	}
+	private JTextField getInputName() {
+		if (inputName == null) {
+			inputName = new JTextField();
+			inputName.setBounds(235, 90, 146, 20);
+			inputName.setColumns(10);
+		}
+		return inputName;
+	}
+	private JLabel getLblLel() {
+		if (lblLel == null) {
+			lblLel = new JLabel("Nombre del Input:");
+			lblLel.setBounds(38, 93, 146, 14);
+		}
+		return lblLel;
 	}
 }

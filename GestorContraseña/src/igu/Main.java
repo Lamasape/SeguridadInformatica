@@ -47,9 +47,16 @@ public class Main {
 		registro.setNombreUsuario("pop");
 		registro.setContrasena("lel");
 		registro.setURL("http://twitter.com");
-
 		
-		service.crearRegistro(registro);
+		Registro registro2 = new Registro();
+		registro2.setId(2);
+		registro2.setTitulo("Facebook");
+		registro2.setNombreUsuario("pop");
+		registro2.setContrasena("lel");
+		registro2.setURL("http://twitter.com");
+		
+
+		//service.crearRegistro(registro);
 		 
 		// ELIMINAR REGISTRO
 //		service.eliminarRegistro(registro);

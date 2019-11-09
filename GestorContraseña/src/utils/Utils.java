@@ -16,6 +16,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 
+import modelo.Registro;
 import persistencia.Persistencia;
 import persistencia.impl.PersistenciaImpl;
 
@@ -31,7 +32,29 @@ public class Utils {
 	// Definición del modo de cifrado a utilizar
 	private final static String cI = "AES/CBC/PKCS5Padding";
 
-	
+	public static boolean equalsDeVerdad(Registro p1, Registro p2)
+	{
+		boolean retorno = true;
+		
+		if(!(p1.getId()== p2.getId())) {
+			retorno =false;
+		}
+		
+		if(!(p1.getContrasena().equals(p2.getContrasena()))) {
+			retorno =false;
+		}
+		if(!(p1.getInputName().equals(p2.getInputName()))) {
+			retorno =false;
+		}
+		if(!(p1.getNombreUsuario().equals(p2.getNombreUsuario()))) {
+			retorno =false;
+		}
+		if(!(p1.getURL().equals( p2.getURL()))) {
+			retorno =false;
+		}
+
+		return retorno;
+	}
 	
 	/**
 	 * Función de tipo String que recibe una llave (key), un vector de

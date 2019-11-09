@@ -9,7 +9,7 @@ public class Registro {
 	String URL;
 	String inputName;
 
-	
+
 	
 	public String getTitulo() {
 		return titulo;

@@ -49,8 +49,15 @@ public class PeticionesWeb {
     }
 
     public static void BorrarPortapapeles() {
-        Clipboard clipBoard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipBoard.setContents(new StringSelection(""), null);
+    	try {
+    		for(int i=0; i<10;i++)
+    		{
+	            Runtime.getRuntime().exec("cmd.exe /c \"echo off|clip\"");
+	            
+    		}
+        } catch (IOException ex) {
+            System.out.println("Operacion no encontrada");
+        }
     }
     
 }

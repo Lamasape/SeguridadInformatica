@@ -158,22 +158,29 @@ public class PersistenciaImpl implements Persistencia {
 			System.out.println("Error al crear registro " + e.toString());
 		}
 	}
-
+	
+	
 	@Override
 	public void eliminarRegistro(Registro registr) {
+		
+		
 		Usuario usuario = leerUsuario();
 		ArrayList<Registro> rgs = (ArrayList<Registro>) usuario.getRegistros();
+		System.out.println(usuario.getRegistros().size());
 		try {
 
 			for (int i = 0; i < usuario.getRegistros().size(); i++) {
-				if (usuario.getRegistros().get(i).getId() == registr.getId()) {
+				System.out.println("entro");
+				//if (usuario.getRegistros().get(i).getId() == registr.getId()) {
+				if(Utils.equalsDeVerdad(usuario.getRegistros().get(i), registr)) {
+					System.out.println("debo eliminar:" +rgs.get(i).getNombreUsuario());//
 					rgs.remove(i);
 				}
 			}
 			if (rgs.size() > 0) {
+				Utils.borrarTxt(bdd);
+				crearContrasenaMaestra2(usuario.getContrasenaMaestra(), usuario.getFechaDeCreacionContraseña());
 				for (Registro registro2 : rgs) {
-					Utils.borrarTxt(bdd);
-					crearContrasenaMaestra2(usuario.getContrasenaMaestra(), usuario.getFechaDeCreacionContraseña());
 					crearRegistro2(registro2);
 				}
 			} else {

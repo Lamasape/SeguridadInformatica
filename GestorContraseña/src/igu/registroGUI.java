@@ -5,12 +5,15 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.border.EmptyBorder;
 
 import persistencia.Persistencia;
 import persistencia.impl.PersistenciaImpl;
 import servicio.ServicioRegistro;
 import servicio.impl.ServiceRegistroImpl;
+import utils.PeticionesWeb;
+import utils.Utils;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -83,6 +86,13 @@ public class registroGUI extends JFrame {
 		contentPane.add(getLblParaAbrirUna());
 		contentPane.add(getBtnNewButton());
 		
+		
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		    	PeticionesWeb.BorrarPortapapeles();
+		    }
+		}); 
 
 	}
 	private JButton getBtnMoficiarContraseaMaestra() {
@@ -231,12 +241,17 @@ public class registroGUI extends JFrame {
 					else
 					{
 						try {		
+							
 							Registro registro=new ServiceRegistroImpl().leerUsuario().getRegistros().get(table_1.getSelectedRow());
 							String nombreDeUsuario=registro.getNombreUsuario();
 							String url=registro.getURL();
 							String contraseña= registro.getContrasena();
-							///Aqui va lo que le toca a Diego xdxdxddd
-						} catch (IOException e) {
+							String inputName= registro.getInputName();
+							
+							PeticionesWeb.openInBrowser(url, nombreDeUsuario, inputName);
+							PeticionesWeb.CopiarPortapapeles(Utils.desencriptar(Utils.desencriptar(contraseña)));
+							
+						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
