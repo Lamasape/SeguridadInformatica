@@ -1,6 +1,5 @@
 package igu;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -19,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import java.awt.Toolkit;
 
 public class AgregarRegistroGUI extends JFrame {
 
@@ -43,7 +43,9 @@ public class AgregarRegistroGUI extends JFrame {
 			public void run() {
 				try {
 					AgregarRegistroGUI frame = new AgregarRegistroGUI();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
+					frame.setResizable(false);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -55,6 +57,8 @@ public class AgregarRegistroGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public AgregarRegistroGUI() {
+		setTitle("Gestor Contrase\u00F1as PUJ");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 418, 300);
 		contentPane = new JPanel();
@@ -120,10 +124,10 @@ public class AgregarRegistroGUI extends JFrame {
 										registro.setInputName(inputName.getText());
 										ServicioRegistro servicio=new ServiceRegistroImpl();
 										servicio.crearRegistro(registro);
-										new registroGUI().setVisible(true);
+										new RegistroGUI().setVisible(true);
 										dispose();
 									} catch (Exception e1) {
-										// TODO Auto-generated catch block
+										System.out.println("error" + e.toString());
 										e1.printStackTrace();
 									}
 								}
@@ -162,7 +166,7 @@ public class AgregarRegistroGUI extends JFrame {
 			btnCancelar = new JButton("Cancelar");
 			btnCancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					new registroGUI().setVisible(true);
+					new RegistroGUI().setVisible(true);
 					dispose();
 				}
 			});

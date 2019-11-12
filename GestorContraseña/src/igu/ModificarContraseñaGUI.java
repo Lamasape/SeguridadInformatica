@@ -1,6 +1,5 @@
 package igu;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -12,21 +11,16 @@ import servicio.impl.ServiceRegistroImpl;
 import utils.Utils;
 import utils.UtilsContraseñaVerifications;
 
-import java.awt.GridBagLayout;
-import javax.swing.JTextField;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import java.awt.FlowLayout;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
-public class modificarContraseñaGUI extends JFrame {
+public class ModificarContraseñaGUI extends JFrame {
 
 	private JPanel contentPane;
 	private JLabel label;
@@ -46,8 +40,10 @@ public class modificarContraseñaGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					modificarContraseñaGUI frame = new modificarContraseñaGUI("", false);
+					ModificarContraseñaGUI frame = new ModificarContraseñaGUI("", false);
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
+					frame.setResizable(false);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -58,7 +54,9 @@ public class modificarContraseñaGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public modificarContraseñaGUI(String cadena, boolean primeraVez) {
+	public ModificarContraseñaGUI(String cadena, boolean primeraVez) {
+		setTitle("Gestor Contrase\u00F1as PUJ");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
 		this.primeraVez=primeraVez;
 		this.labelMessage=cadena;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -134,7 +132,7 @@ public class modificarContraseñaGUI extends JFrame {
 									{
 										servicio.modificarContrasenaMaestra(getPasswordField().getText());
 									}
-									new registroGUI().setVisible(true);
+									new RegistroGUI().setVisible(true);
 									JOptionPane.showMessageDialog(new JFrame(), "Contraseña cambiada exitosamente.", "Exito!",JOptionPane.DEFAULT_OPTION);
 									dispose();
 								}
@@ -152,7 +150,7 @@ public class modificarContraseñaGUI extends JFrame {
 						}
 
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
+						System.out.println("error" + e.toString());
 						e.printStackTrace();
 					}
 
@@ -169,7 +167,7 @@ public class modificarContraseñaGUI extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (getLabel_1().getText().equals("Llene los siguientes campos para cambiar la contraseña"))
 					{
-						new registroGUI().setVisible(true);
+						new RegistroGUI().setVisible(true);
 					}
 					else
 					{

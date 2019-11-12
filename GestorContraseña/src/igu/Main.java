@@ -22,6 +22,8 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		ServiceRegistroImpl service = new ServiceRegistroImpl();
+		
+		System.out.println(Utils.desencriptar("jIcKQX1G6ru2Je7R7vjYjw=="));
 
 		// LEER CONTRASEÑA MAESTRA
 //		 Usuario usuario = service.leerUsuario();

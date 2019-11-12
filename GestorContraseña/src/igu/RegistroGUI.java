@@ -1,11 +1,9 @@
 package igu;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.border.EmptyBorder;
 
 import persistencia.Persistencia;
@@ -15,7 +13,6 @@ import servicio.impl.ServiceRegistroImpl;
 import utils.PeticionesWeb;
 import utils.Utils;
 
-import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -26,16 +23,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import javax.swing.table.DefaultTableModel;
 
 import modelo.Registro;
 import javax.swing.ListSelectionModel;
-import javax.swing.JTabbedPane;
+import java.awt.Toolkit;
 
-public class registroGUI extends JFrame {
+public class RegistroGUI extends JFrame {
 
 	private JPanel contentPane;
 	private JButton btnMoficiarContraseaMaestra;
@@ -56,8 +50,10 @@ public class registroGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					registroGUI frame = new registroGUI();
+					RegistroGUI frame = new RegistroGUI();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
+					frame.setResizable(false);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -68,7 +64,9 @@ public class registroGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public registroGUI() {
+	public RegistroGUI() {
+		setTitle("Gestor Contrase\u00F1as PUJ");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
 		cadena=this.modificarLabel();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,7 +99,11 @@ public class registroGUI extends JFrame {
 			btnMoficiarContraseaMaestra.setBounds(377, 270, 211, 23);
 			btnMoficiarContraseaMaestra.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					new modificarContraseñaGUI("Llene los siguientes campos para cambiar la contraseña", false).setVisible(true);
+					ModificarContraseñaGUI mod = new ModificarContraseñaGUI("Llene los siguientes campos para cambiar la contraseña", false);
+					mod.setResizable(false);
+					mod.setLocationRelativeTo(null);
+					mod.setVisible(true);
+					
 					dispose();
 				}
 			});
@@ -135,7 +137,7 @@ public class registroGUI extends JFrame {
 			return new String("Dias restantes de vigencia de\n la contraseña maestra: "+ (7-diferencia)+" dias.");
 				
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("error" + e.toString());
 			e.printStackTrace();
 		}
 		return null;
@@ -185,7 +187,7 @@ public class registroGUI extends JFrame {
 				modelo.addRow(new Object[] {registro.getNombreUsuario(), registro.getURL()});
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("error" + e.toString());
 			e.printStackTrace();
 		}
 
@@ -209,7 +211,7 @@ public class registroGUI extends JFrame {
 							servicio.eliminarRegistro(servicio.leerUsuario().getRegistros().get(table_1.getSelectedRow()));
 							actualizarTabla();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
+							System.out.println("error" + e.toString());
 							e.printStackTrace();
 						}
 					}
@@ -252,7 +254,7 @@ public class registroGUI extends JFrame {
 							PeticionesWeb.CopiarPortapapeles(Utils.desencriptar(Utils.desencriptar(contraseña)));
 							
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
+							System.out.println("error" + e.toString());
 							e.printStackTrace();
 						}
 					}
@@ -274,7 +276,10 @@ public class registroGUI extends JFrame {
 			btnNewButton = new JButton("Agregar Nuevo Registro");
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					new AgregarRegistroGUI().setVisible(true);
+					AgregarRegistroGUI ag = new AgregarRegistroGUI();
+					ag.setLocationRelativeTo(null);
+					ag.setResizable(false);
+					ag.setVisible(true);
 					dispose();
 				}
 			});
