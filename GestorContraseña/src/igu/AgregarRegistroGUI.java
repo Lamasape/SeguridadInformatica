@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.Toolkit;
+import java.awt.Color;
 
 public class AgregarRegistroGUI extends JFrame {
 
@@ -57,6 +58,7 @@ public class AgregarRegistroGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public AgregarRegistroGUI() {
+		setBackground(Color.WHITE);
 		setTitle("Gestor Contrase\u00F1as PUJ");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

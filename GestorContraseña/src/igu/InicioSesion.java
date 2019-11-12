@@ -30,6 +30,7 @@ import javax.swing.UIManager;
 
 import com.sun.prism.Image;
 import java.awt.Toolkit;
+import java.awt.Color;
 
 public class InicioSesion extends JFrame {
 	private JPanel panel;
@@ -38,6 +39,7 @@ public class InicioSesion extends JFrame {
 	private JPasswordField passwordField;
 	private JButton btnImprotarInfo;
 	private JButton btnExportarInfo;
+	private JLabel lblBienvenido;
 
 	/**
 	 * Launch the application.
@@ -83,12 +85,14 @@ public class InicioSesion extends JFrame {
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
+			panel.setBackground(Color.WHITE);
 			panel.setLayout(null);
 			panel.add(getBotonIniciarSesion());
 			panel.add(getLblContrasea());
 			panel.add(getPasswordField());
 			panel.add(getBtnImprotarInfo());
 			panel.add(getBtnExportarInfo());
+			panel.add(getLblBienvenido());
 		}
 		return panel;
 	}
@@ -119,15 +123,17 @@ public class InicioSesion extends JFrame {
 								ModificarContraseñaGUI mod = new ModificarContraseñaGUI(
 										"Su contraseña ha expirado, por favor ingresar una contraseña nueva", false);
 								mod.setLocationRelativeTo(null);
-								mod.setVisible(true);
 								mod.setResizable(false);
+								mod.setBackground(Color.WHITE);
+								mod.setVisible(true);
 								dispose();
 							} else {
 								System.out.println("Sesion Iniciada");
 								RegistroGUI reg = new RegistroGUI();
-								reg.setLocationRelativeTo(null);
-								reg.setVisible(true);
+								reg.setLocationRelativeTo(null);							
 								reg.setResizable(false);
+								reg.setBackground(Color.WHITE);
+								reg.setVisible(true);
 								dispose();
 							}
 						} else {
@@ -153,7 +159,7 @@ public class InicioSesion extends JFrame {
 	private JLabel getLblContrasea() {
 		if (lblContrasea == null) {
 			lblContrasea = new JLabel("Contrase\u00F1a");
-			lblContrasea.setBounds(21, 86, 122, 14);
+			lblContrasea.setBounds(21, 104, 122, 14);
 		}
 		return lblContrasea;
 	}
@@ -161,7 +167,7 @@ public class InicioSesion extends JFrame {
 	private JPasswordField getPasswordField() {
 		if (passwordField == null) {
 			passwordField = new JPasswordField();
-			passwordField.setBounds(115, 83, 199, 20);
+			passwordField.setBounds(115, 101, 199, 20);
 		}
 		return passwordField;
 	}
@@ -218,5 +224,13 @@ public class InicioSesion extends JFrame {
 			btnExportarInfo.setBounds(202, 186, 112, 23);
 		}
 		return btnExportarInfo;
+	}
+	private JLabel getLblBienvenido() {
+		if (lblBienvenido == null) {
+			lblBienvenido = new JLabel("Bienvenido");
+			lblBienvenido.setIcon(new ImageIcon("C:\\Users\\User\\Documents\\Universidad\\2019-2020\\Introduccion Seeguridad Informatica\\Proyecto2\\GitGestor\\SeguridadInformatica\\GestorContrase\u00F1a\\bnv.png"));
+			lblBienvenido.setBounds(32, 4, 282, 89);
+		}
+		return lblBienvenido;
 	}
 }

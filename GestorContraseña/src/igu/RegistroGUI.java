@@ -28,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 import modelo.Registro;
 import javax.swing.ListSelectionModel;
 import java.awt.Toolkit;
+import java.awt.Color;
 
 public class RegistroGUI extends JFrame {
 
@@ -65,6 +66,7 @@ public class RegistroGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public RegistroGUI() {
+		setBackground(Color.WHITE);
 		setTitle("Gestor Contrase\u00F1as PUJ");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
 		cadena=this.modificarLabel();
