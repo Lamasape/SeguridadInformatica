@@ -1,7 +1,10 @@
 package servicio;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.time.LocalDate;
 
 import modelo.Registro;
 import modelo.Usuario;
@@ -39,5 +42,26 @@ public interface ServicioRegistro {
 	 * Modifica la contrasena maestra 
 	 */
 	public void modificarContrasenaMaestra(String contrasena);
-
+	/**
+	 * Copiar registro a la nueva bdd
+	 * 
+	 */
+	void crearContrasenaMaestra2(String contraseña, LocalDate fechaDeCreacion);
+	
+	/**
+	 * Copiar registro
+	 */
+	void crearRegistro2(Registro registro);
+	
+	/**
+	 * Exportar base de datos
+	 * 
+	 */
+	File getBdd();
+	/**
+	 * Importar base de datos
+	 */
+	void setBdd(File bdd);
+	
+	public OutputStream flujoDelArchivo() ;
 }

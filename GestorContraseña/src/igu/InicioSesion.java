@@ -2,8 +2,6 @@ package igu;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.image.*;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JFileChooser;
@@ -11,11 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import persistencia.Persistencia;
-import persistencia.impl.PersistenciaImpl;
 import utils.Utils;
 import utils.UtilsContraseñaVerifications;
-
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,7 +23,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import javax.swing.UIManager;
 
-import com.sun.prism.Image;
+
+import servicio.ServicioRegistro;
+import servicio.impl.ServiceRegistroImpl;
+
 import java.awt.Toolkit;
 import java.awt.Color;
 
@@ -40,7 +38,7 @@ public class InicioSesion extends JFrame {
 	private JButton btnImprotarInfo;
 	private JButton btnExportarInfo;
 	private JLabel lblBienvenido;
-
+	private ServicioRegistro servicio = new ServiceRegistroImpl();
 	/**
 	 * Launch the application.
 	 */
@@ -49,19 +47,20 @@ public class InicioSesion extends JFrame {
 
 			public void run() {
 				try {
-
+					ServicioRegistro servicio = new ServiceRegistroImpl();
 					if (UtilsContraseñaVerifications.verSiElArchivoExisteOSiEstaVacio()) {
 						UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 						InicioSesion frame;
-						frame = new InicioSesion();
+						frame = new InicioSesion(servicio);
 						frame.setLocationRelativeTo(null);
 						frame.setVisible(true);
 						frame.setResizable(false);
-						//javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.aero.AeroLookAndFeel");
-						
 					} else {
-						new ModificarContraseñaGUI("No existe ninguna contraseña maestra, crear una", true)
-								.setVisible(true);
+						ModificarContraseñaGUI frame;
+						frame=new ModificarContraseñaGUI("No existe ninguna contraseña maestra, crear una", true, servicio);
+						frame.setVisible(true);
+						frame.setResizable(false);
+						frame.setLocationRelativeTo(null);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -73,7 +72,8 @@ public class InicioSesion extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public InicioSesion() {
+	public InicioSesion(ServicioRegistro servicio) {
+		servicio=this.servicio;
 		setTitle("Gestor Contrase\u00F1as PUJ");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
 				"icon.png"));
@@ -105,14 +105,13 @@ public class InicioSesion extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					String contrasenia = getPasswordField().getText().trim();
 					System.out.println("Contraseña digitada: " + contrasenia);
-					Persistencia persistencia = new PersistenciaImpl();
+
 
 					try {
-						String contraseniaEncriptada = persistencia.leerUsuario().getContrasenaMaestra();
-						String contraseniaDesencriptada = Utils.desencriptar(contraseniaEncriptada);
+						String contraseniaEncriptada = servicio.leerUsuario().getContrasenaMaestra();
 						System.out.println("Contraseña que está en la base de datos: " + contraseniaEncriptada);
 						if (contraseniaEncriptada.equals(Utils.encriptar(contrasenia))) {
-							LocalDate fechaCreacionContra = persistencia.leerUsuario().getFechaDeCreacionContraseña();
+							LocalDate fechaCreacionContra = servicio.leerUsuario().getFechaDeCreacionContraseña();
 							LocalDate date = LocalDate.now();
 							long diferencia = ChronoUnit.DAYS.between(fechaCreacionContra, date);
 							if (diferencia < 0)// Just in case xdxdxdddd
@@ -121,7 +120,7 @@ public class InicioSesion extends JFrame {
 							}
 							if (diferencia > 7) {
 								ModificarContraseñaGUI mod = new ModificarContraseñaGUI(
-										"Su contraseña ha expirado, por favor ingresar una contraseña nueva", false);
+										"Su contraseña ha expirado, por favor ingresar una contraseña nueva", false, servicio);
 								mod.setLocationRelativeTo(null);
 								mod.setResizable(false);
 								mod.setBackground(Color.WHITE);
@@ -129,7 +128,7 @@ public class InicioSesion extends JFrame {
 								dispose();
 							} else {
 								System.out.println("Sesion Iniciada");
-								RegistroGUI reg = new RegistroGUI();
+								RegistroGUI reg = new RegistroGUI(servicio);
 								reg.setLocationRelativeTo(null);							
 								reg.setResizable(false);
 								reg.setBackground(Color.WHITE);
@@ -185,8 +184,10 @@ public class InicioSesion extends JFrame {
 						System.out.println("You selected: " + fc.getSelectedFile().getAbsolutePath());
 
 						try {
+
 							Files.copy(Paths.get(fc.getSelectedFile().getPath()),
-									new PersistenciaImpl().flujoDelArchivo());
+
+									servicio.flujoDelArchivo());
 						} catch (IOException e1) {
 							System.out.println("error" + e.toString());
 							e1.printStackTrace();
@@ -212,7 +213,7 @@ public class InicioSesion extends JFrame {
 						System.out.println("You selected: " + fc.getSelectedFile().getAbsolutePath());
 
 						try {
-							Files.copy(Paths.get(new PersistenciaImpl().getBdd().getPath()), new FileOutputStream(
+							Files.copy(Paths.get(servicio.getBdd().getPath()), new FileOutputStream(
 									new File(fc.getSelectedFile().getAbsolutePath() + "\\bdd.txt")));
 						} catch (IOException e1) {
 							System.out.println("error" + e.toString());
@@ -228,7 +229,7 @@ public class InicioSesion extends JFrame {
 	private JLabel getLblBienvenido() {
 		if (lblBienvenido == null) {
 			lblBienvenido = new JLabel("Bienvenido");
-			lblBienvenido.setIcon(new ImageIcon("C:\\Users\\User\\Documents\\Universidad\\2019-2020\\Introduccion Seeguridad Informatica\\Proyecto2\\GitGestor\\SeguridadInformatica\\GestorContrase\u00F1a\\bnv.png"));
+			lblBienvenido.setIcon(new ImageIcon("bnv.png"));
 			lblBienvenido.setBounds(32, 4, 282, 89);
 		}
 		return lblBienvenido;

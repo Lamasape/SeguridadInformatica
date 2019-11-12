@@ -40,7 +40,6 @@ public class Main {
 
 		System.out.println(service.leerUsuario().getFechaDeCreacionContraseña());
 		
-		
 		// CREAR REGISTRO
 		
 		Registro registro = new Registro();

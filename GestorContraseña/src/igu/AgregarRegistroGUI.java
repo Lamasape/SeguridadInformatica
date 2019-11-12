@@ -35,29 +35,17 @@ public class AgregarRegistroGUI extends JFrame {
 	private JLabel lblLlenarLosSiguientes;
 	private JTextField inputName;
 	private JLabel lblLel;
-
+	private ServicioRegistro servicio;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AgregarRegistroGUI frame = new AgregarRegistroGUI();
-					frame.setLocationRelativeTo(null);
-					frame.setVisible(true);
-					frame.setResizable(false);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
 	 */
-	public AgregarRegistroGUI() {
+	public AgregarRegistroGUI(ServicioRegistro servicio) {
+		this.servicio=servicio;
 		setBackground(Color.WHITE);
 		setTitle("Gestor Contrase\u00F1as PUJ");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
@@ -126,7 +114,10 @@ public class AgregarRegistroGUI extends JFrame {
 										registro.setInputName(inputName.getText());
 										ServicioRegistro servicio=new ServiceRegistroImpl();
 										servicio.crearRegistro(registro);
-										new RegistroGUI().setVisible(true);
+										RegistroGUI frame=	new RegistroGUI(servicio);
+										frame.setVisible(true);
+										frame.setResizable(false);
+										frame.setLocationRelativeTo(null);
 										dispose();
 									} catch (Exception e1) {
 										System.out.println("error" + e.toString());
@@ -168,7 +159,10 @@ public class AgregarRegistroGUI extends JFrame {
 			btnCancelar = new JButton("Cancelar");
 			btnCancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					new RegistroGUI().setVisible(true);
+					RegistroGUI frame=	new RegistroGUI(servicio);
+					frame.setVisible(true);
+					frame.setResizable(false);
+					frame.setLocationRelativeTo(null);
 					dispose();
 				}
 			});

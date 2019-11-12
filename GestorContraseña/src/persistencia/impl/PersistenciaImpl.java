@@ -57,18 +57,7 @@ public class PersistenciaImpl implements Persistencia {
 		}
 	}
 	
-//	public void crearContrasenaMaestra3(String contraseña, LocalDate fechaDeCreacion) {
-//
-//		try {
-//			FileWriter escribir = new FileWriter(bdd, true);
-//			escribir.write(contraseña);
-//			escribir.write("\n"+fechaDeCreacion);
-//			escribir.close();
-//		} // Si existe un problema al escribir cae aqui
-//		catch (Exception e) {
-//			System.out.println("Error al crear contraseña ");
-//		}
-//	}
+
 
 	@Override
 	public Usuario leerUsuario() {
@@ -259,5 +248,11 @@ public class PersistenciaImpl implements Persistencia {
 	public void setBdd(File bdd) {
 		this.bdd = bdd;
 	}
+
+
+
+
+
+
 
 }

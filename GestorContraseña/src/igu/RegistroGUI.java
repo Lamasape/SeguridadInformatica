@@ -1,18 +1,13 @@
 package igu;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import persistencia.Persistencia;
-import persistencia.impl.PersistenciaImpl;
 import servicio.ServicioRegistro;
 import servicio.impl.ServiceRegistroImpl;
 import utils.PeticionesWeb;
 import utils.Utils;
-
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -24,12 +19,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
 import modelo.Registro;
 import javax.swing.ListSelectionModel;
 import java.awt.Toolkit;
 import java.awt.Color;
-
 public class RegistroGUI extends JFrame {
 
 	private JPanel contentPane;
@@ -43,29 +36,17 @@ public class RegistroGUI extends JFrame {
 	private JButton btnAbrirPlataforma;
 	private JLabel lblParaAbrirUna;
 	private JButton btnNewButton;
+	private ServicioRegistro servicio;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegistroGUI frame = new RegistroGUI();
-					frame.setLocationRelativeTo(null);
-					frame.setVisible(true);
-					frame.setResizable(false);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public RegistroGUI() {
+	public RegistroGUI(ServicioRegistro servicio) {
+		this.servicio=servicio;
 		setBackground(Color.WHITE);
 		setTitle("Gestor Contrase\u00F1as PUJ");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
@@ -85,23 +66,30 @@ public class RegistroGUI extends JFrame {
 		contentPane.add(getBtnAbrirPlataforma());
 		contentPane.add(getLblParaAbrirUna());
 		contentPane.add(getBtnNewButton());
-		
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 		    	PeticionesWeb.BorrarPortapapeles();
+		    	InicioSesion frame;
+		    	frame=new InicioSesion(servicio);
+		    	frame.setLocationRelativeTo(null);
+		    	frame.setResizable(false);
+		    	frame.setVisible(true);    	
 		    }
 		}); 
 
+
 	}
+
 	private JButton getBtnMoficiarContraseaMaestra() {
 		if (btnMoficiarContraseaMaestra == null) {
 			btnMoficiarContraseaMaestra = new JButton("Moficiar Contrase\u00F1a Maestra");
 			btnMoficiarContraseaMaestra.setBounds(377, 270, 211, 23);
 			btnMoficiarContraseaMaestra.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					ModificarContraseñaGUI mod = new ModificarContraseñaGUI("Llene los siguientes campos para cambiar la contraseña", false);
+					ModificarContraseñaGUI mod = new ModificarContraseñaGUI("Llene los siguientes campos para cambiar la contraseña", false, servicio);
 					mod.setResizable(false);
 					mod.setLocationRelativeTo(null);
 					mod.setVisible(true);
@@ -125,13 +113,13 @@ public class RegistroGUI extends JFrame {
 	
 	
 	private String modificarLabel() {
-		Persistencia persistencia= new PersistenciaImpl();
+		 
 		try {
 			LocalDate fechaCreacionContra;
-			fechaCreacionContra = persistencia.leerUsuario().getFechaDeCreacionContraseña();
+			fechaCreacionContra = servicio.leerUsuario().getFechaDeCreacionContraseña();
 			LocalDate date=LocalDate.now();
 			long diferencia=ChronoUnit.DAYS.between(fechaCreacionContra, date);
-			if(diferencia<0)//Just in case xdxdxdddd
+			if(diferencia<0)
 			{
 				diferencia*=-1;
 			}
@@ -251,7 +239,6 @@ public class RegistroGUI extends JFrame {
 							String url=registro.getURL();
 							String contraseña= registro.getContrasena();
 							String inputName= registro.getInputName();
-							
 							PeticionesWeb.openInBrowser(url, nombreDeUsuario, inputName);
 							PeticionesWeb.CopiarPortapapeles(Utils.desencriptar(Utils.desencriptar(contraseña)));
 							
@@ -278,7 +265,7 @@ public class RegistroGUI extends JFrame {
 			btnNewButton = new JButton("Agregar Nuevo Registro");
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					AgregarRegistroGUI ag = new AgregarRegistroGUI();
+					AgregarRegistroGUI ag = new AgregarRegistroGUI(servicio);
 					ag.setLocationRelativeTo(null);
 					ag.setResizable(false);
 					ag.setVisible(true);

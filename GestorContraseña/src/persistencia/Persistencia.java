@@ -1,7 +1,10 @@
 package persistencia;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.time.LocalDate;
 
 import modelo.Registro;
 import modelo.Usuario;
@@ -29,12 +32,28 @@ public interface Persistencia {
 	 * @throws IOException
 	 */
 	void eliminarRegistro(Registro registr);
-
+	
+	/*
+	 * 
+	 */
+	File getBdd();
+	public OutputStream flujoDelArchivo();
+	void setBdd(File bdd);
+	/**
+	 * Copiar registro a la nueva bdd
+	 * 
+	 */
+	void crearRegistro2(Registro registro);
 	/**
 	 * Crear Contrasena Maestra por primera vez 
 	 */
 
 	void crearContrasenaMaestra(String contrasena);
+	/**
+	 * Copiar Contrasena Maestra por primera vez 
+	 * @param contraseña
+	 */
+	void crearContrasenaMaestra2(String contraseña, LocalDate fechaDeCreacion);
 
 	/**
 	 * Lee la contrasena maestra de la bdd
@@ -43,7 +62,6 @@ public interface Persistencia {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-
 	Usuario leerUsuario() throws IOException;
 
 	/**

@@ -1,6 +1,9 @@
 package servicio.impl;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.time.LocalDate;
 
 import modelo.Registro;
 import modelo.Usuario;
@@ -37,5 +40,28 @@ public class ServiceRegistroImpl implements ServicioRegistro {
 		System.out.println("CONTRASEÑA MODIFICADA");
 		
 	}
-
+	@Override
+	public void crearContrasenaMaestra2(String contraseña, LocalDate fechaDeCreacion) {
+		persistencia.crearContrasenaMaestra2(contraseña, fechaDeCreacion);
+		
+	}
+	@Override
+	public void crearRegistro2(Registro registro) {
+		crearRegistro2(registro);
+	}
+	@Override
+	public File getBdd() {
+		
+		return persistencia.getBdd();
+	}
+	@Override
+	public void setBdd(File bdd) {
+		persistencia.setBdd(bdd);
+	}
+	@Override
+	public OutputStream flujoDelArchivo() {
+		// TODO Auto-generated method stub
+		return persistencia.flujoDelArchivo();
+	}
+	
 }

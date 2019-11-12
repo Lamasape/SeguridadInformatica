@@ -34,34 +34,23 @@ public class ModificarContraseñaGUI extends JFrame {
 	private JLabel label_1;
 	private String labelMessage;
 	private boolean primeraVez;
+	ServicioRegistro servicio;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ModificarContraseñaGUI frame = new ModificarContraseñaGUI("", false);
-					frame.setLocationRelativeTo(null);
-					frame.setVisible(true);
-					frame.setResizable(false);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
 	 */
-	public ModificarContraseñaGUI(String cadena, boolean primeraVez) {
+	public ModificarContraseñaGUI(String cadena, boolean primeraVez, ServicioRegistro servicio) {
+		this.servicio=servicio;
 		setBackground(Color.WHITE);
 		setTitle("Gestor Contrase\u00F1as PUJ");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
 		this.primeraVez=primeraVez;
 		this.labelMessage=cadena;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 276);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -125,7 +114,6 @@ public class ModificarContraseñaGUI extends JFrame {
 							{
 								if(UtilsContraseñaVerifications.verificarContrasenia(Utils.desencriptar(contra1).toCharArray()))///Ver estandares para ver si la contraseña es segura
 								{
-									ServicioRegistro servicio= new ServiceRegistroImpl();
 									if(primeraVez)
 									{
 										servicio.crearContrasenaMaestra(getPasswordField().getText());
@@ -134,17 +122,18 @@ public class ModificarContraseñaGUI extends JFrame {
 									{
 										servicio.modificarContrasenaMaestra(getPasswordField().getText());
 									}
-									new RegistroGUI().setVisible(true);
+									RegistroGUI frame=	new RegistroGUI(servicio);
+									frame.setVisible(true);
+									frame.setResizable(false);
+									frame.setLocationRelativeTo(null);
 									JOptionPane.showMessageDialog(new JFrame(), "Contraseña cambiada exitosamente.", "Exito!",JOptionPane.DEFAULT_OPTION);
 									dispose();
 								}
-								
 							}
 							else
 							{
 								JOptionPane.showMessageDialog(new JFrame(), "Las contraseñas no coinciden... vuelvelo a intentar.", "Error",JOptionPane.ERROR_MESSAGE);
 							}
-
 						}
 						else
 						{
@@ -169,11 +158,17 @@ public class ModificarContraseñaGUI extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (getLabel_1().getText().equals("Llene los siguientes campos para cambiar la contraseña"))
 					{
-						new RegistroGUI().setVisible(true);
+						RegistroGUI frame=	new RegistroGUI(servicio);
+						frame.setVisible(true);
+						frame.setResizable(false);
+						frame.setLocationRelativeTo(null);
 					}
 					else
 					{
-						new InicioSesion().setVisible(true);
+						RegistroGUI frame=	new RegistroGUI(servicio);
+						frame.setVisible(true);
+						frame.setResizable(false);
+						frame.setLocationRelativeTo(null);
 					}
 					dispose();
 				}
