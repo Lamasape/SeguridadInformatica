@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
 import modelo.Registro;
 import modelo.Usuario;
 
@@ -52,7 +53,7 @@ public class RegistroGUI extends JFrame {
 		this.servicio=servicio;
 		setBackground(Color.WHITE);
 		setTitle("Gestor Contrase\u00F1as PUJ");
-		setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(RegistroGUI.class.getResource("/img/icon.png")));
 		cadena=this.modificarLabel();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -47,7 +47,7 @@ public class ModificarRegistro extends JFrame {
 	 * Create the frame. @throws
 	 */
 	public ModificarRegistro(ServicioRegistro servicio, Registro registro) {
-		setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ModificarRegistro.class.getResource("/img/icon.png")));
 		this.servicio = servicio;
 		this.registro=registro;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

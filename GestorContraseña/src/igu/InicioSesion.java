@@ -74,8 +74,7 @@ public class InicioSesion extends JFrame {
 	public InicioSesion(ServicioRegistro servicio) {
 		servicio=this.servicio;
 		setTitle("Gestor Contrase\u00F1as PUJ");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(
-				"icon.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(InicioSesion.class.getResource("/img/icon.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 351, 259);
 		getContentPane().add(getPanel(), BorderLayout.CENTER);
@@ -228,7 +227,7 @@ public class InicioSesion extends JFrame {
 	private JLabel getLblBienvenido() {
 		if (lblBienvenido == null) {
 			lblBienvenido = new JLabel("Bienvenido");
-			lblBienvenido.setIcon(new ImageIcon("bnv.png"));
+			lblBienvenido.setIcon(new ImageIcon(InicioSesion.class.getResource("/img/bnv.png")));
 			lblBienvenido.setBounds(32, 4, 282, 89);
 		}
 		return lblBienvenido;

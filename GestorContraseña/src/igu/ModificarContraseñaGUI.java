@@ -48,7 +48,7 @@ public class ModificarContraseñaGUI extends JFrame {
 		this.servicio=servicio;
 		setBackground(Color.WHITE);
 		setTitle("Gestor Contrase\u00F1as PUJ");
-		setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ModificarContraseñaGUI.class.getResource("/img/icon.png")));
 		this.primeraVez=primeraVez;
 		this.labelMessage=cadena;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
