@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 
 public class UtilsContraseñaVerifications {
 	
-	static File bdd = new File("src/bdd/bdd.txt");
+	static File bdd = new File("bdd.txt");
 
 	/**
 	 * Función que sirve para ver si la contraseña cumple con los parametros para que sea segura

@@ -18,7 +18,7 @@ import utils.Utils;
 
 public class PersistenciaImpl implements Persistencia {
 
-	File bdd = new File("src/bdd/bdd.txt");
+	File bdd = new File("bdd.txt");
 	
 	public OutputStream flujoDelArchivo() 
 	{
