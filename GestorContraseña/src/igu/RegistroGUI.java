@@ -20,6 +20,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import modelo.Registro;
+import modelo.Usuario;
+
 import javax.swing.ListSelectionModel;
 import java.awt.Toolkit;
 import java.awt.Color;
@@ -200,7 +202,8 @@ public class RegistroGUI extends JFrame {
 					else
 					{
 						try {
-							servicio.eliminarRegistro(servicio.leerUsuario().getRegistros().get(table_1.getSelectedRow()));
+							Usuario usuario=servicio.leerUsuario();
+							servicio.eliminarRegistro(usuario.getRegistros().get(table_1.getSelectedRow()),usuario);
 							actualizarTabla();
 						} catch (IOException e) {
 							System.out.println("error" + e.toString());

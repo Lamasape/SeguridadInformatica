@@ -9,12 +9,15 @@ import javax.swing.border.EmptyBorder;
 
 import modelo.Registro;
 import servicio.ServicioRegistro;
+import utils.PeticionesWeb;
 import utils.Utils;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import javax.swing.JPasswordField;
@@ -34,6 +37,7 @@ public class ModificarRegistro extends JFrame {
 	private ServicioRegistro servicio;
 	private Registro registro;
 	private JPasswordField passwordField;
+	private JLabel lblParaModificarLos;
 
 	/**
 	 * Launch the application.
@@ -45,8 +49,9 @@ public class ModificarRegistro extends JFrame {
 	public ModificarRegistro(ServicioRegistro servicio, Registro registro) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
 		this.servicio = servicio;
+		this.registro=registro;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 426, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -67,16 +72,29 @@ public class ModificarRegistro extends JFrame {
 		String contrasenia = registro.getContrasena();
 		try {
 			this.passwordField.setText(Utils.desencriptar(Utils.desencriptar(contrasenia)));
+			contentPane.add(getLblParaModificarLos());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				RegistroGUI frame;
+				frame=new RegistroGUI(servicio);
+				frame.setLocationRelativeTo(null);
+				frame.setResizable(false);
+				frame.setVisible(true);    	
+			}
+		}); 
+
 	}
 
 	private JLabel getNombreDeUsuario() {
 		if (nombreDeUsuario == null) {
 			nombreDeUsuario = new JLabel("Nombre de Usuario");
-			nombreDeUsuario.setBounds(75, 89, 216, 14);
+			nombreDeUsuario.setBounds(39, 104, 216, 14);
 		}
 		return nombreDeUsuario;
 	}
@@ -84,7 +102,7 @@ public class ModificarRegistro extends JFrame {
 	private JLabel getLblInputName() {
 		if (lblInputName == null) {
 			lblInputName = new JLabel("Input Name");
-			lblInputName.setBounds(75, 126, 154, 14);
+			lblInputName.setBounds(39, 141, 154, 14);
 		}
 		return lblInputName;
 	}
@@ -92,7 +110,7 @@ public class ModificarRegistro extends JFrame {
 	private JLabel getLblContrasea() {
 		if (lblContrasea == null) {
 			lblContrasea = new JLabel("Contrase\u00F1a");
-			lblContrasea.setBounds(75, 162, 143, 14);
+			lblContrasea.setBounds(39, 177, 143, 14);
 		}
 		return lblContrasea;
 	}
@@ -100,7 +118,7 @@ public class ModificarRegistro extends JFrame {
 	private JLabel getLblNombreDeLa() {
 		if (lblNombreDeLa == null) {
 			lblNombreDeLa = new JLabel("Nombre de la plataforma");
-			lblNombreDeLa.setBounds(75, 49, 143, 14);
+			lblNombreDeLa.setBounds(39, 64, 143, 14);
 		}
 		return lblNombreDeLa;
 	}
@@ -108,7 +126,7 @@ public class ModificarRegistro extends JFrame {
 	private JTextField getTextFieldPlataforma() {
 		if (textFieldPlataforma == null) {
 			textFieldPlataforma = new JTextField();
-			textFieldPlataforma.setBounds(228, 46, 183, 20);
+			textFieldPlataforma.setBounds(192, 61, 183, 20);
 			textFieldPlataforma.setColumns(10);
 		}
 		return textFieldPlataforma;
@@ -117,7 +135,7 @@ public class ModificarRegistro extends JFrame {
 	private JTextField getNombreUsuario() {
 		if (nombreUsuario == null) {
 			nombreUsuario = new JTextField();
-			nombreUsuario.setBounds(228, 86, 183, 20);
+			nombreUsuario.setBounds(192, 101, 183, 20);
 			nombreUsuario.setColumns(10);
 		}
 		return nombreUsuario;
@@ -126,7 +144,7 @@ public class ModificarRegistro extends JFrame {
 	private JTextField getInputName() {
 		if (inputName == null) {
 			inputName = new JTextField();
-			inputName.setBounds(228, 123, 183, 20);
+			inputName.setBounds(192, 138, 183, 20);
 			inputName.setColumns(10);
 		}
 		return inputName;
@@ -145,7 +163,7 @@ public class ModificarRegistro extends JFrame {
 					dispose();
 				}
 			});
-			btnCancelar.setBounds(65, 205, 89, 23);
+			btnCancelar.setBounds(39, 227, 89, 23);
 		}
 		return btnCancelar;
 	}
@@ -153,7 +171,66 @@ public class ModificarRegistro extends JFrame {
 	private JButton getBtnAceptar() {
 		if (btnAceptar == null) {
 			btnAceptar = new JButton("Aceptar");
-			btnAceptar.setBounds(262, 205, 89, 23);
+			btnAceptar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					
+					if(!textFieldPlataforma.getText().isEmpty())
+					{
+						if(!nombreUsuario.getText().isEmpty())
+						{
+							if(!inputName.getText().isEmpty())
+							{
+								if(!passwordField.getText().isEmpty())
+								{
+									System.out.println("id "+registro.getId());
+									try {
+										servicio.eliminarRegistro(registro, servicio.leerUsuario());
+									} catch (IOException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+									try {
+										registro.setContrasena(Utils.encriptar(passwordField.getText()));
+										registro.setId(2);
+										registro.setInputName(inputName.getText());
+										registro.setNombreUsuario(nombreUsuario.getText());
+										registro.setTitulo(nombreUsuario.getText());
+										registro.setURL(textFieldPlataforma.getText());
+										servicio.crearRegistro(registro);
+										RegistroGUI frame=new RegistroGUI(servicio);
+										frame.setLocationRelativeTo(null);
+										frame.setResizable(false);
+										frame.setVisible(true);
+										JOptionPane.showMessageDialog(new JFrame(), "Registro cambiado exitosamente.", "Exito!",JOptionPane.DEFAULT_OPTION);
+										dispose();
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									//servicio.crearRegistro();
+								}
+								else
+								{
+									JOptionPane.showMessageDialog(new JFrame(), "Insertar una contraseña", "Error",JOptionPane.ERROR_MESSAGE);
+								}
+							}
+							else
+							{
+								JOptionPane.showMessageDialog(new JFrame(), "Insertar el input name del inicio de sesión", "Error",JOptionPane.ERROR_MESSAGE);
+							}
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(new JFrame(), "Insertar un nombre de usuario", "Error",JOptionPane.ERROR_MESSAGE);
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(new JFrame(), "Insertar URL de la plataforma", "Error",JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			});
+			btnAceptar.setBounds(263, 227, 89, 23);
 		}
 		return btnAceptar;
 	}
@@ -161,8 +238,15 @@ public class ModificarRegistro extends JFrame {
 	private JPasswordField getPasswordField() {
 		if (passwordField == null) {
 			passwordField = new JPasswordField();
-			passwordField.setBounds(228, 159, 183, 20);
+			passwordField.setBounds(192, 174, 183, 20);
 		}
 		return passwordField;
+	}
+	private JLabel getLblParaModificarLos() {
+		if (lblParaModificarLos == null) {
+			lblParaModificarLos = new JLabel("Para modificar los datos del registro, cambiar los sigueintes campos:");
+			lblParaModificarLos.setBounds(35, 26, 365, 14);
+		}
+		return lblParaModificarLos;
 	}
 }

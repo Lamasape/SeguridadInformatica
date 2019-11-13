@@ -24,15 +24,7 @@ public interface Persistencia {
 	 */
 	void crearRegistro(Registro registr);
 
-	/**
-	 * Eliminar registro
-	 * 
-	 * @param registr
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 */
-	void eliminarRegistro(Registro registr);
-	
+
 	/*
 	 * 
 	 */
@@ -75,4 +67,6 @@ public interface Persistencia {
 	 * @param registro
 	 */
 	void modificarRegistro(Registro registro);
+
+	void eliminarRegistro(Registro registr, Usuario usuario);
 }

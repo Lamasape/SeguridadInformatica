@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import modelo.Registro;
 import servicio.ServicioRegistro;
 import servicio.impl.ServiceRegistroImpl;
+import utils.PeticionesWeb;
 import utils.Utils;
 
 import javax.swing.JTextField;
@@ -66,6 +67,18 @@ public class AgregarRegistroGUI extends JFrame {
 		contentPane.add(getLblLlenarLosSiguientes());
 		contentPane.add(getInputName());
 		contentPane.add(getLblLel());
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				RegistroGUI frame;
+				frame=new RegistroGUI(servicio);
+				frame.setLocationRelativeTo(null);
+				frame.setResizable(false);
+				frame.setVisible(true);    	
+			}
+		}); 
+
 	}
 	private JTextField getNombreUsuario() {
 		if (nombreUsuario == null) {
@@ -119,6 +132,7 @@ public class AgregarRegistroGUI extends JFrame {
 										frame.setResizable(false);
 										frame.setLocationRelativeTo(null);
 										dispose();
+										JOptionPane.showMessageDialog(new JFrame(), "Registro agregado exitosamente.", "Exito!",JOptionPane.DEFAULT_OPTION);
 									} catch (Exception e1) {
 										System.out.println("error" + e.toString());
 										e1.printStackTrace();

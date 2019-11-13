@@ -49,7 +49,7 @@ public class PersistenciaImpl implements Persistencia {
 		try {
 			FileWriter escribir = new FileWriter(bdd, true);
 			escribir.write(contraseña);
-			escribir.write("\n"+LocalDate.now().toString());
+			escribir.write("\n"+fechaDeCreacion);
 			escribir.close();
 		} // Si existe un problema al escribir cae aqui
 		catch (Exception e) {
@@ -79,6 +79,8 @@ public class PersistenciaImpl implements Persistencia {
 					if(contador==1)
 					{
 						usuario.setFechaDeCreacionContraseña(LocalDate.parse(cadena));
+						System.out.println("fecha1: "+cadena);
+						System.out.println("fecha:"+ LocalDate.parse(cadena));
 						contador++;
 					}
 					else
@@ -150,10 +152,7 @@ public class PersistenciaImpl implements Persistencia {
 	
 	
 	@Override
-	public void eliminarRegistro(Registro registr) {
-		
-		
-		Usuario usuario = leerUsuario();
+	public void eliminarRegistro(Registro registr, Usuario usuario) {
 		ArrayList<Registro> rgs = (ArrayList<Registro>) usuario.getRegistros();
 		System.out.println(usuario.getRegistros().size());
 		try {

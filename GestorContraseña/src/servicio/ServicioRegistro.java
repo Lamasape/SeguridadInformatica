@@ -30,14 +30,7 @@ public interface ServicioRegistro {
 	
 	void crearContrasenaMaestra(String contrasena);
 	
-	/**
-	 * Elimina registro bdd
-	 * @param registro
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
-	 */
-	void eliminarRegistro(Registro registro); 
-
+	
 	/**
 	 * Modifica la contrasena maestra 
 	 */
@@ -64,4 +57,6 @@ public interface ServicioRegistro {
 	void setBdd(File bdd);
 	
 	public OutputStream flujoDelArchivo() ;
+
+	void eliminarRegistro(Registro registro, Usuario usuario);
 }

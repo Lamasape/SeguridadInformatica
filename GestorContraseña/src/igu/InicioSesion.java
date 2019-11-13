@@ -44,12 +44,11 @@ public class InicioSesion extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-
 			public void run() {
 				try {
 					ServicioRegistro servicio = new ServiceRegistroImpl();
+					UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 					if (UtilsContraseñaVerifications.verSiElArchivoExisteOSiEstaVacio()) {
-						UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 						InicioSesion frame;
 						frame = new InicioSesion(servicio);
 						frame.setLocationRelativeTo(null);
@@ -185,9 +184,8 @@ public class InicioSesion extends JFrame {
 
 						try {
 
-							Files.copy(Paths.get(fc.getSelectedFile().getPath()),
-
-									servicio.flujoDelArchivo());
+							Files.copy(Paths.get(fc.getSelectedFile().getPath()),servicio.flujoDelArchivo());
+							JOptionPane.showMessageDialog(new JFrame(), "¡Informacion de la base de datos importada existosamente!", "Exito!",JOptionPane.DEFAULT_OPTION);
 						} catch (IOException e1) {
 							System.out.println("error" + e.toString());
 							e1.printStackTrace();
@@ -213,8 +211,9 @@ public class InicioSesion extends JFrame {
 						System.out.println("You selected: " + fc.getSelectedFile().getAbsolutePath());
 
 						try {
-							Files.copy(Paths.get(servicio.getBdd().getPath()), new FileOutputStream(
-									new File(fc.getSelectedFile().getAbsolutePath() + "\\bdd.txt")));
+							FileOutputStream flujo= new FileOutputStream(new File(fc.getSelectedFile().getAbsolutePath() + "\\bdd.txt"));
+							Files.copy(Paths.get(servicio.getBdd().getPath()),flujo);
+							JOptionPane.showMessageDialog(new JFrame(), "Información de la base de datos exportada exitosamente", "Exito!",JOptionPane.DEFAULT_OPTION);
 						} catch (IOException e1) {
 							System.out.println("error" + e.toString());
 							e1.printStackTrace();

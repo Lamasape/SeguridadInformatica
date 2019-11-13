@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import servicio.ServicioRegistro;
 import servicio.impl.ServiceRegistroImpl;
+import utils.PeticionesWeb;
 import utils.Utils;
 import utils.UtilsContraseñaVerifications;
 
@@ -64,6 +65,28 @@ public class ModificarContraseñaGUI extends JFrame {
 		contentPane.add(getBtnAceptar());
 		contentPane.add(getBtnCancelar());
 		contentPane.add(getLabel_1());
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				PeticionesWeb.BorrarPortapapeles();		
+				if (labelMessage.equals("Su contraseña ha expirado, por favor ingresar una contraseña nueva"))
+				{
+					InicioSesion frame=	new InicioSesion(servicio);
+					frame.setVisible(true);
+					frame.setResizable(false);
+					frame.setLocationRelativeTo(null);
+				}
+				else
+				{
+					RegistroGUI frame=	new RegistroGUI(servicio);
+					frame.setVisible(true);
+					frame.setResizable(false);
+					frame.setLocationRelativeTo(null);
+				}
+			}
+		}); 
 	}
 	private JLabel getLabel() {
 		if (label == null) {
@@ -113,21 +136,35 @@ public class ModificarContraseñaGUI extends JFrame {
 							if(UtilsContraseñaVerifications.verSiEsLaMisma(contra1, contra2))///Ver si las dos contraseñas coinciden
 							{
 								if(UtilsContraseñaVerifications.verificarContrasenia(Utils.desencriptar(contra1).toCharArray()))///Ver estandares para ver si la contraseña es segura
-								{
-									if(primeraVez)
+								{	
+									if (!primeraVez)
 									{
-										servicio.crearContrasenaMaestra(getPasswordField().getText());
+										if(!servicio.leerUsuario().getContrasenaMaestra().equals(contra1))
+										{
+											servicio.modificarContrasenaMaestra(getPasswordField().getText());
+											RegistroGUI frame=	new RegistroGUI(servicio);
+											frame.setVisible(true);
+											frame.setResizable(false);
+											frame.setLocationRelativeTo(null);
+											JOptionPane.showMessageDialog(new JFrame(), "Contraseña cambiada exitosamente.", "Exito!",JOptionPane.DEFAULT_OPTION);
+											dispose();
+										}
+										else
+										{
+											JOptionPane.showMessageDialog(new JFrame(), "La contraseña debe ser distinta a la actual", "Error!",JOptionPane.ERROR_MESSAGE);
+										}
 									}
 									else
 									{
-										servicio.modificarContrasenaMaestra(getPasswordField().getText());
+										servicio.crearContrasenaMaestra(getPasswordField().getText());
+										RegistroGUI frame=	new RegistroGUI(servicio);
+										frame.setVisible(true);
+										frame.setResizable(false);
+										frame.setLocationRelativeTo(null);
+										JOptionPane.showMessageDialog(new JFrame(), "Contraseña cambiada exitosamente.", "Exito!",JOptionPane.DEFAULT_OPTION);
+										dispose();
 									}
-									RegistroGUI frame=	new RegistroGUI(servicio);
-									frame.setVisible(true);
-									frame.setResizable(false);
-									frame.setLocationRelativeTo(null);
-									JOptionPane.showMessageDialog(new JFrame(), "Contraseña cambiada exitosamente.", "Exito!",JOptionPane.DEFAULT_OPTION);
-									dispose();
+
 								}
 							}
 							else
@@ -156,9 +193,9 @@ public class ModificarContraseñaGUI extends JFrame {
 			btnCancelar = new JButton("Cancelar");
 			btnCancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (getLabel_1().getText().equals("Llene los siguientes campos para cambiar la contraseña"))
+					if (labelMessage.equals("Su contraseña ha expirado, por favor ingresar una contraseña nueva"))
 					{
-						RegistroGUI frame=	new RegistroGUI(servicio);
+						InicioSesion frame=	new InicioSesion(servicio);
 						frame.setVisible(true);
 						frame.setResizable(false);
 						frame.setLocationRelativeTo(null);

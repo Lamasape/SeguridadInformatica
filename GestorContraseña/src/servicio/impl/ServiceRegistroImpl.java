@@ -29,8 +29,8 @@ public class ServiceRegistroImpl implements ServicioRegistro {
 		System.out.println("Contraseña Creada");
 	}
 	@Override
-	public void eliminarRegistro(Registro registro) {
-		persistencia.eliminarRegistro(registro);
+	public void eliminarRegistro(Registro registro, Usuario usuario) {
+		persistencia.eliminarRegistro(registro, usuario);
 		System.out.println("Registro eliminado");
 		
 	}
