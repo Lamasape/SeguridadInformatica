@@ -37,6 +37,7 @@ public class RegistroGUI extends JFrame {
 	private JLabel lblParaAbrirUna;
 	private JButton btnNewButton;
 	private ServicioRegistro servicio;
+	private JButton btnEditarRegistro;
 
 	/**
 	 * Launch the application.
@@ -51,7 +52,7 @@ public class RegistroGUI extends JFrame {
 		setTitle("Gestor Contrase\u00F1as PUJ");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
 		cadena=this.modificarLabel();
-		
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 609, 337);
 		contentPane = new JPanel();
@@ -66,18 +67,19 @@ public class RegistroGUI extends JFrame {
 		contentPane.add(getBtnAbrirPlataforma());
 		contentPane.add(getLblParaAbrirUna());
 		contentPane.add(getBtnNewButton());
+		contentPane.add(getBtnEditarRegistro());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
-		    @Override
-		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		    	PeticionesWeb.BorrarPortapapeles();
-		    	InicioSesion frame;
-		    	frame=new InicioSesion(servicio);
-		    	frame.setLocationRelativeTo(null);
-		    	frame.setResizable(false);
-		    	frame.setVisible(true);    	
-		    }
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				PeticionesWeb.BorrarPortapapeles();
+				InicioSesion frame;
+				frame=new InicioSesion(servicio);
+				frame.setLocationRelativeTo(null);
+				frame.setResizable(false);
+				frame.setVisible(true);    	
+			}
 		}); 
 
 
@@ -93,7 +95,7 @@ public class RegistroGUI extends JFrame {
 					mod.setResizable(false);
 					mod.setLocationRelativeTo(null);
 					mod.setVisible(true);
-					
+
 					dispose();
 				}
 			});
@@ -101,8 +103,8 @@ public class RegistroGUI extends JFrame {
 		return btnMoficiarContraseaMaestra;
 	}
 	private JLabel getLabel() {
-		
-		
+
+
 		if (label == null) {
 			label = new JLabel(cadena);
 			label.setBounds(10, 270, 380, 23);
@@ -110,10 +112,10 @@ public class RegistroGUI extends JFrame {
 		return label;
 
 	}
-	
-	
+
+
 	private String modificarLabel() {
-		 
+
 		try {
 			LocalDate fechaCreacionContra;
 			fechaCreacionContra = servicio.leerUsuario().getFechaDeCreacionContraseña();
@@ -123,15 +125,15 @@ public class RegistroGUI extends JFrame {
 			{
 				diferencia*=-1;
 			}
-			
+
 			return new String("Dias restantes de vigencia de\n la contraseña maestra: "+ (7-diferencia)+" dias.");
-				
+
 		} catch (IOException e) {
 			System.out.println("error" + e.toString());
 			e.printStackTrace();
 		}
 		return null;
-		
+
 	}
 	private JTable getTable() {
 		if (table == null) {
@@ -153,7 +155,7 @@ public class RegistroGUI extends JFrame {
 		if (table_1 == null) {
 			table_1 = new JTable();
 			table_1.setModel(llenarTabla());
-			
+
 		}
 		table_1.setSelectionMode(0);
 		return table_1;
@@ -162,16 +164,16 @@ public class RegistroGUI extends JFrame {
 	{
 		DefaultTableModel modelo= new DefaultTableModel(){
 
-		    @Override
-		    public boolean isCellEditable(int row, int column) {
-		       //all cells false
-		       return false;
-		    }
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				//all cells false
+				return false;
+			}
 		};
 		modelo.addColumn("Nombre de Cuenta");
 		modelo.addColumn("Plataforma");
 		ServicioRegistro servicio=new ServiceRegistroImpl();
-		
+
 		try {
 			for (Registro registro : servicio.leerUsuario().getRegistros()) {
 				modelo.addRow(new Object[] {registro.getNombreUsuario(), registro.getURL()});
@@ -181,7 +183,7 @@ public class RegistroGUI extends JFrame {
 			e.printStackTrace();
 		}
 
-		
+
 		return modelo;
 	}
 	private JButton getBtnEliminarColumna() {
@@ -190,7 +192,7 @@ public class RegistroGUI extends JFrame {
 			btnEliminarColumna.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					ServicioRegistro servicio=new ServiceRegistroImpl();
-					
+
 					if(table_1.getSelectedRow()==-1)
 					{
 						JOptionPane.showMessageDialog(new JFrame(), "¡Selecciona un registro para eliminarlo!", "Error",JOptionPane.ERROR_MESSAGE);
@@ -205,14 +207,14 @@ public class RegistroGUI extends JFrame {
 							e.printStackTrace();
 						}
 					}
-					
+
 				}
 			});
 			btnEliminarColumna.setBounds(377, 242, 211, 23);
 		}
 		return btnEliminarColumna;
 	}
-	
+
 	private void actualizarTabla()
 	{
 		//table_1 = new JTable();
@@ -233,7 +235,7 @@ public class RegistroGUI extends JFrame {
 					else
 					{
 						try {		
-							
+
 							Registro registro=new ServiceRegistroImpl().leerUsuario().getRegistros().get(table_1.getSelectedRow());
 							String nombreDeUsuario=registro.getNombreUsuario();
 							String url=registro.getURL();
@@ -241,7 +243,7 @@ public class RegistroGUI extends JFrame {
 							String inputName= registro.getInputName();
 							PeticionesWeb.openInBrowser(url, nombreDeUsuario, inputName);
 							PeticionesWeb.CopiarPortapapeles(Utils.desencriptar(Utils.desencriptar(contraseña)));
-							
+
 						} catch (Exception e) {
 							System.out.println("error" + e.toString());
 							e.printStackTrace();
@@ -249,7 +251,7 @@ public class RegistroGUI extends JFrame {
 					}
 				}
 			});
-			btnAbrirPlataforma.setBounds(403, 121, 141, 23);
+			btnAbrirPlataforma.setBounds(401, 94, 141, 23);
 		}
 		return btnAbrirPlataforma;
 	}
@@ -275,6 +277,37 @@ public class RegistroGUI extends JFrame {
 			btnNewButton.setBounds(380, 209, 208, 23);
 		}
 		return btnNewButton;
+	}
+	private JButton getBtnEditarRegistro() {
+		if (btnEditarRegistro == null) {
+			btnEditarRegistro = new JButton("Editar Registro");
+			btnEditarRegistro.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					if(table_1.getSelectedRow()==-1)
+					{
+						JOptionPane.showMessageDialog(new JFrame(), "¡Selecciona un registro para editarlo!", "Error",JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						try {		
+							ModificarRegistro frame;
+							Registro registro=new ServiceRegistroImpl().leerUsuario().getRegistros().get(table_1.getSelectedRow());
+							frame=new ModificarRegistro(servicio, registro);
+							frame.setLocationRelativeTo(null);
+							frame.setResizable(false);
+							frame.setVisible(true);	
+							dispose();
+						} catch (Exception e) {
+							System.out.println("error" + e.toString());
+							e.printStackTrace();
+						}
+					}
+
+				}
+			});
+			btnEditarRegistro.setBounds(401, 148, 143, 23);
+		}
+		return btnEditarRegistro;
 	}
 }
 
