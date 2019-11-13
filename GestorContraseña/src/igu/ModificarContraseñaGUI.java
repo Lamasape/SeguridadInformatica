@@ -67,20 +67,23 @@ public class ModificarContraseñaGUI extends JFrame {
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-				PeticionesWeb.BorrarPortapapeles();		
-				if (labelMessage.equals("Su contraseña ha expirado, por favor ingresar una contraseña nueva"))
+				if(!primeraVez)
 				{
-					InicioSesion frame=	new InicioSesion(servicio);
-					frame.setVisible(true);
-					frame.setResizable(false);
-					frame.setLocationRelativeTo(null);
-				}
-				else
-				{
-					RegistroGUI frame=	new RegistroGUI(servicio);
-					frame.setVisible(true);
-					frame.setResizable(false);
-					frame.setLocationRelativeTo(null);
+					PeticionesWeb.BorrarPortapapeles();		
+					if (labelMessage.equals("Su contraseña ha expirado, por favor ingresar una contraseña nueva"))
+					{
+						InicioSesion frame=	new InicioSesion(servicio);
+						frame.setVisible(true);
+						frame.setResizable(false);
+						frame.setLocationRelativeTo(null);
+					}
+					else
+					{
+						RegistroGUI frame=	new RegistroGUI(servicio);
+						frame.setVisible(true);
+						frame.setResizable(false);
+						frame.setLocationRelativeTo(null);
+					}
 				}
 			}
 		}); 
@@ -190,19 +193,22 @@ public class ModificarContraseñaGUI extends JFrame {
 			btnCancelar = new JButton("Cancelar");
 			btnCancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (labelMessage.equals("Su contraseña ha expirado, por favor ingresar una contraseña nueva"))
+					if(!primeraVez)
 					{
-						InicioSesion frame=	new InicioSesion(servicio);
-						frame.setVisible(true);
-						frame.setResizable(false);
-						frame.setLocationRelativeTo(null);
-					}
-					else
-					{
-						RegistroGUI frame=	new RegistroGUI(servicio);
-						frame.setVisible(true);
-						frame.setResizable(false);
-						frame.setLocationRelativeTo(null);
+						if (labelMessage.equals("Su contraseña ha expirado, por favor ingresar una contraseña nueva"))
+						{
+							InicioSesion frame=	new InicioSesion(servicio);
+							frame.setVisible(true);
+							frame.setResizable(false);
+							frame.setLocationRelativeTo(null);
+						}
+						else
+						{
+							RegistroGUI frame=	new RegistroGUI(servicio);
+							frame.setVisible(true);
+							frame.setResizable(false);
+							frame.setLocationRelativeTo(null);
+						}
 					}
 					dispose();
 				}
