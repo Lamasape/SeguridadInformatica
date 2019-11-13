@@ -18,13 +18,14 @@ import utils.Utils;
 
 public class PersistenciaImpl implements Persistencia {
 
-	File bdd = new File("/bdd/bdd.txt");
+	File bdd = new File("src/bdd/bdd.txt");
+	
 	public OutputStream flujoDelArchivo() 
 	{
 		try {
 			return new FileOutputStream(bdd);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+				System.out.println("ERROR" + e.toString());
 			e.printStackTrace();
 		}
 		return null;

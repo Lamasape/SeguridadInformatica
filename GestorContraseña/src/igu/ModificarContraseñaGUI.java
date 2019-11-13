@@ -1,13 +1,10 @@
 package igu;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import servicio.ServicioRegistro;
-import servicio.impl.ServiceRegistroImpl;
 import utils.PeticionesWeb;
 import utils.Utils;
 import utils.UtilsContraseñaVerifications;

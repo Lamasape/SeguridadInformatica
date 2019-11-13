@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 
 import modelo.Registro;
+import modelo.Usuario;
 import persistencia.Persistencia;
 import persistencia.impl.PersistenciaImpl;
 import servicio.impl.ServiceRegistroImpl;
@@ -26,8 +27,8 @@ public class Main {
 		System.out.println(Utils.desencriptar("jIcKQX1G6ru2Je7R7vjYjw=="));
 
 		// LEER CONTRASEÑA MAESTRA
-//		 Usuario usuario = service.leerUsuario();
-//			System.out.println(usuario.getContrasenaMaestra());
+		 Usuario usuario = service.leerUsuario();
+			System.out.println(usuario.getContrasenaMaestra());
 //			try {
 //				System.out.println(Utils.Desencriptar(usuario.getContrasenaMaestra()));
 //			} catch (Exception e) {

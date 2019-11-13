@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class UtilsContraseñaVerifications {
+	
+	static File bdd = new File("src/bdd/bdd.txt");
 
 	/**
 	 * Función que sirve para ver si la contraseña cumple con los parametros para que sea segura
@@ -106,8 +108,10 @@ public class UtilsContraseñaVerifications {
 	}
 	public static boolean verSiElArchivoExisteOSiEstaVacio()
 	{
-		File bdd = new File("bdd.txt");
+		
+	
 		return (bdd.exists() && bdd.length()>0) ;
+		
 	}
 	/**
 	 * Funcion para ver si un string tiene por lo menos 8 digitos
