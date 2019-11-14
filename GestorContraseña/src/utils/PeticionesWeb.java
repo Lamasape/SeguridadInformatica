@@ -46,5 +46,29 @@ public class PeticionesWeb {
 			System.out.println("Operacion no encontrada");
 		}
 	}
+	public static String generarInput(String url) {
+		String resultado;
+		url=url.trim();
+		switch (url) {
+		case "https://github.com/login":
+			resultado = "login";
+			break;
+		case "https://discordapp.com/login":
+			resultado = "email";
+			break;
+		case "https://twitter.com/login":
+			resultado = "username_or_email";
+			break; 
+		case "https://www.facebook.com/login":
+			resultado = "email";
+			break;
+
+		default:
+			resultado = "Na";
+			break;
+		}
+		return resultado;
+	}
+
 
 }

@@ -34,8 +34,6 @@ public class AgregarRegistroGUI extends JFrame {
 	private JLabel lblNombreDeUsuario;
 	private JLabel lblContrasea;
 	private JLabel lblLlenarLosSiguientes;
-	private JTextField inputName;
-	private JLabel lblLel;
 	private ServicioRegistro servicio;
 	/**
 	 * Launch the application.
@@ -51,7 +49,7 @@ public class AgregarRegistroGUI extends JFrame {
 		setTitle("Gestor Contrase\u00F1as PUJ");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 418, 300);
+		setBounds(100, 100, 418, 253);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -65,8 +63,6 @@ public class AgregarRegistroGUI extends JFrame {
 		contentPane.add(getLblNombreDeUsuario());
 		contentPane.add(getLblContrasea());
 		contentPane.add(getLblLlenarLosSiguientes());
-		contentPane.add(getInputName());
-		contentPane.add(getLblLel());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
@@ -83,7 +79,7 @@ public class AgregarRegistroGUI extends JFrame {
 	private JTextField getNombreUsuario() {
 		if (nombreUsuario == null) {
 			nombreUsuario = new JTextField();
-			nombreUsuario.setBounds(235, 117, 146, 20);
+			nombreUsuario.setBounds(235, 90, 146, 20);
 			nombreUsuario.setColumns(10);
 		}
 		return nombreUsuario;
@@ -91,7 +87,7 @@ public class AgregarRegistroGUI extends JFrame {
 	private JPasswordField getPasswordField() {
 		if (passwordField == null) {
 			passwordField = new JPasswordField();
-			passwordField.setBounds(235, 148, 146, 20);
+			passwordField.setBounds(235, 121, 146, 20);
 		}
 		return passwordField;
 	}
@@ -115,34 +111,27 @@ public class AgregarRegistroGUI extends JFrame {
 						{
 							if(PaginaWeb.getText().length()>0)
 							{
-								if(inputName.getText().length()>0)
-								{
-									Registro registro= new Registro();
-									try {
-										registro.setContrasena( Utils.encriptar(passwordField.getText()));
-										registro.setTitulo(nombreUsuario.getText());
-										registro.setId(2);
-										registro.setNombreUsuario(nombreUsuario.getText());
-										registro.setURL(PaginaWeb.getText());
-										registro.setInputName(inputName.getText());
-										ServicioRegistro servicio=new ServiceRegistroImpl();
-										servicio.crearRegistro(registro);
-										RegistroGUI frame=	new RegistroGUI(servicio);
-										frame.setVisible(true);
-										frame.setResizable(false);
-										frame.setLocationRelativeTo(null);
-										dispose();
-										JOptionPane.showMessageDialog(new JFrame(), "Registro agregado exitosamente.", "Exito!",JOptionPane.DEFAULT_OPTION);
-									} catch (Exception e1) {
-										System.out.println("error" + e.toString());
-										e1.printStackTrace();
-									}
-								}
-								else
-								{
-									JOptionPane.showMessageDialog(new JFrame(), "Insertar el input name del inicio de sesión", "Error",JOptionPane.ERROR_MESSAGE);
-								}
-								
+								Registro registro= new Registro();
+								try {
+									registro.setContrasena( Utils.encriptar(passwordField.getText()));
+									registro.setTitulo(nombreUsuario.getText());
+									registro.setId(2);
+									registro.setNombreUsuario(nombreUsuario.getText());
+									registro.setURL(PaginaWeb.getText());
+									registro.setInputName(PeticionesWeb.generarInput(registro.getURL()));
+									///registro.setInputName(inputName.getText()); Llamada de diego
+									ServicioRegistro servicio=new ServiceRegistroImpl();
+									servicio.crearRegistro(registro);
+									RegistroGUI frame=	new RegistroGUI(servicio);
+									frame.setVisible(true);
+									frame.setResizable(false);
+									frame.setLocationRelativeTo(null);
+									dispose();
+									JOptionPane.showMessageDialog(new JFrame(), "Registro agregado exitosamente.", "Exito!",JOptionPane.DEFAULT_OPTION);
+								} catch (Exception e1) {
+									System.out.println("error" + e.toString());
+									e1.printStackTrace();
+								}	
 							}
 							else
 							{
@@ -164,7 +153,7 @@ public class AgregarRegistroGUI extends JFrame {
 
 				}
 			});
-			btnAgregarRegistro.setBounds(235, 209, 146, 23);
+			btnAgregarRegistro.setBounds(235, 166, 146, 23);
 		}
 		return btnAgregarRegistro;
 	}
@@ -180,7 +169,7 @@ public class AgregarRegistroGUI extends JFrame {
 					dispose();
 				}
 			});
-			btnCancelar.setBounds(25, 209, 112, 23);
+			btnCancelar.setBounds(26, 166, 112, 23);
 		}
 		return btnCancelar;
 	}
@@ -194,14 +183,14 @@ public class AgregarRegistroGUI extends JFrame {
 	private JLabel getLblNombreDeUsuario() {
 		if (lblNombreDeUsuario == null) {
 			lblNombreDeUsuario = new JLabel("Nombre de usuario:");
-			lblNombreDeUsuario.setBounds(38, 120, 136, 14);
+			lblNombreDeUsuario.setBounds(38, 93, 136, 14);
 		}
 		return lblNombreDeUsuario;
 	}
 	private JLabel getLblContrasea() {
 		if (lblContrasea == null) {
 			lblContrasea = new JLabel("Contrase\u00F1a:");
-			lblContrasea.setBounds(38, 151, 87, 14);
+			lblContrasea.setBounds(38, 124, 87, 14);
 		}
 		return lblContrasea;
 	}
@@ -211,20 +200,5 @@ public class AgregarRegistroGUI extends JFrame {
 			lblLlenarLosSiguientes.setBounds(10, 26, 328, 14);
 		}
 		return lblLlenarLosSiguientes;
-	}
-	private JTextField getInputName() {
-		if (inputName == null) {
-			inputName = new JTextField();
-			inputName.setBounds(235, 90, 146, 20);
-			inputName.setColumns(10);
-		}
-		return inputName;
-	}
-	private JLabel getLblLel() {
-		if (lblLel == null) {
-			lblLel = new JLabel("Nombre del Input:");
-			lblLel.setBounds(38, 93, 146, 14);
-		}
-		return lblLel;
 	}
 }
