@@ -1,0 +1,15 @@
+facebook https://www.facebook.com/login
+usuario: sheeva0710@gmail.com
+contraseña "Santiago1"
+
+twitter https://twitter.com/login
+usuario: sheeva0710@gmail.com
+contraseña: "Santiago2"
+
+GitHub https://github.com/login
+usuario: sheeva0710
+contraseña: Santiago1
+
+Discord https://discordapp.com/login
+usuario: sheeva0710@gmail.com
+contraseña: Santiago1
